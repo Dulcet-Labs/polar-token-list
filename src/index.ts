@@ -1,8 +1,25 @@
 import path from "path";
 import { Token, BannedList, OutputList } from "./types";
-import { readJson, writeJson, fileExists, readTokensFromCsv, readBannedFromCsv } from "./io";
+import {
+  readJson,
+  writeJson,
+  fileExists,
+  readTokensFromCsv,
+  readBannedFromCsv,
+} from "./io";
 import { validateToken } from "./validate";
 import { isStrictEligible } from "./compose";
+
+function cmpToken(a: Token, b: Token): number {
+  if (a.verified !== b.verified) return a.verified ? -1 : 1;
+  const sa = (a.symbol || a.name || "").toLowerCase();
+  const sb = (b.symbol || b.name || "").toLowerCase();
+  if (sa < sb) return -1;
+  if (sa > sb) return 1;
+  const na = (a.name || "").toLowerCase();
+  const nb = (b.name || "").toLowerCase();
+  return na.localeCompare(nb);
+}
 
 async function main() {
   const root = path.resolve(__dirname, "..");
@@ -38,7 +55,9 @@ async function main() {
   for (const t of tokens) {
     const errs = validateToken(t);
     if (errs.length > 0) {
-      console.warn(`Skipping token ${t.symbol || t.objectId}: ${errs.join(", ")}`);
+      console.warn(
+        `Skipping token ${t.symbol || t.objectId}: ${errs.join(", ")}`
+      );
       continue;
     }
     validTokens.push(t);
@@ -57,9 +76,16 @@ async function main() {
     banned = await readJson<BannedList>(bannedPathJson);
   } else {
     const now = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
-    banned = { name: "Polar Banned Tokens", chain: "sui", updatedAt: now, banned: [] };
+    banned = {
+      name: "Polar Banned Tokens",
+      chain: "sui",
+      updatedAt: now,
+      banned: [],
+    };
   }
-  const bannedSet = new Set<string>(banned.banned.map((b) => b.objectId.toLowerCase()));
+  const bannedSet = new Set<string>(
+    banned.banned.map((b) => b.objectId.toLowerCase())
+  );
 
   // all = tokens - banned
   const allTokens = deduped.filter((t) => !bannedSet.has(t.objectId));
@@ -79,7 +105,7 @@ async function main() {
     name: "Polar Strict Tokens",
     chain: "sui",
     updatedAt: now,
-    filters: ["verified", "partner", "community", "original-registry"],
+    filters: ["verified"],
     tokens: strictTokens,
   };
 
@@ -87,7 +113,9 @@ async function main() {
   await writeJson(path.join(distDir, "strict.json"), strictList);
   await writeJson(path.join(distDir, "banned.json"), banned);
 
-  console.log(`Wrote ${allTokens.length} tokens to all.json, ${strictTokens.length} to strict.json`);
+  console.log(
+    `Wrote ${allTokens.length} tokens to all.json, ${strictTokens.length} to strict.json`
+  );
 }
 
 main().catch((err) => {
