@@ -14,7 +14,7 @@
 - [ ] Define minimal metadata to auto-add (name, symbol, decimals, objectId, addedAt)
 - [ ] Establish safeguards (spam filtering, denylist/allowlist)
 
-## Phase 3: Verification Workflow (Ice ❄️)
+## Phase 3: Verification Workflow (Ice ❄️) using Community Assistant Verification (Some tokens are Auto Verified cause we know them well yh?)
 
 - [ ] Specify submission form fields (objectId, logo, website, socials, audit)
 - [ ] Review checklist and evidence requirements

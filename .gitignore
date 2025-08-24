@@ -23,6 +23,9 @@ coverage/
 logs/
 .env
 
+#md file
+.how-jup.md*
+
 # Logs
 logs
 *.log
