@@ -33,14 +33,17 @@ jobs:
       - name: Use Yarn 4.5.2
         run: corepack prepare yarn@4.5.2 --activate
 
+      - name: Show Yarn version
+        run: corepack yarn --version
+
       - name: Install deps
-        run: yarn install --immutable
+        run: corepack yarn install --immutable
 
       - name: Typecheck
-        run: yarn typecheck
+        run: corepack yarn typecheck
 
       - name: Compose lists
-        run: yarn compose
+        run: corepack yarn compose
 
       - name: Upload artifact (dist)
         uses: actions/upload-pages-artifact@v3

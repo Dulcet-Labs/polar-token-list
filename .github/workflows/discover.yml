@@ -28,8 +28,11 @@ jobs:
       - name: Use Yarn 4.5.2
         run: corepack prepare yarn@4.5.2 --activate
 
+      - name: Show Yarn version
+        run: corepack yarn --version
+
       - name: Install deps
-        run: yarn install --immutable
+        run: corepack yarn install --immutable
 
       - name: Check required secrets
         run: |
@@ -50,7 +53,7 @@ jobs:
           if [ -z "$BLOCKBERRY_API_KEY" ]; then
             export BLOCKBERRY_API_KEY="${{ vars.BLOCKBERRY_API_KEY }}"
           fi
-          yarn discover
+          corepack yarn discover
 
       - name: Commit changes
         run: |
