@@ -1,3 +1,1 @@
-export function placeholder(): string {
-  return "OK";
-}
+console.log("OK");

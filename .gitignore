@@ -22,3 +22,54 @@ build/
 coverage/
 logs/
 .env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directories
+coverage
+.nyc_output
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment files
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Editor & tooling
+.vscode/
+.idea/
+.eslintcache
+.stylelintcache
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Caches
+.cache/
+.parcel-cache/
+.turbo/
+
+# Framework outputs (harmless if unused)
+.next/
+.nuxt/
+.vite/
+.svelte-kit/
