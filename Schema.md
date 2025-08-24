@@ -3,6 +3,7 @@
 ## 1. Token JSON object
 
 Required
+
 - name: string (1–64 chars)
 - symbol: string (1–16 chars)
 - decimals: number (0–18 typical; Sui compatible)
@@ -11,6 +12,7 @@ Required
 - verified: boolean
 
 Recommended
+
 - logoURI: string (HTTPS URL only)
 - verifiedBy: string (admin/user id or signer key id)
 - tags: string[] (e.g., ["auto", "verified", "partner", "community"])
@@ -19,6 +21,7 @@ Recommended
   - description: string (<= 512 chars)
 
 Optional
+
 - signature: object
   - algo: "ed25519" | "secp256k1"
   - signedAt: string (ISO-8601 UTC)
@@ -26,6 +29,7 @@ Optional
 - version: number (>=1)
 
 Example
+
 ```json
 {
   "name": "PolarToken",
@@ -51,17 +55,21 @@ Example
 ```
 
 ## 2. Lists
+
 - all.json: all auto-discovered + verified tokens minus banned
-- strict.json: filtered subset of `all` where `verified == true` or allowlisted tags
+- strict.json: verified-only subset of `all`
 - banned.(json|csv): denylist of objectIds with optional reasons
 
 Example top-level shapes
+
 ```json
 {
   "name": "Polar All Tokens",
   "chain": "sui",
   "updatedAt": "2025-08-24T08:10:00Z",
-  "tokens": [ /* Token objects */ ]
+  "tokens": [
+    /* Token objects */
+  ]
 }
 ```
 
@@ -70,8 +78,10 @@ Example top-level shapes
   "name": "Polar Strict Tokens",
   "chain": "sui",
   "updatedAt": "2025-08-24T08:10:00Z",
-  "filters": ["verified", "partner", "community"],
-  "tokens": [ /* Token objects */ ]
+  "filters": ["verified"],
+  "tokens": [
+    /* Token objects */
+  ]
 }
 ```
 
@@ -80,29 +90,30 @@ Example top-level shapes
   "name": "Polar Banned Tokens",
   "chain": "sui",
   "updatedAt": "2025-08-24T08:10:00Z",
-  "banned": [
-    { "objectId": "0xdead...", "reason": "phishing" }
-  ]
+  "banned": [{ "objectId": "0xdead...", "reason": "phishing" }]
 }
 ```
 
 ## 3. Validation rules
+
 - name/symbol: non-empty; trim; block zero-width/emoji-only; no leading/trailing spaces
 - decimals: integer 0–18
 - objectId: must match /^0x[a-f0-9]+$/; dedupe by objectId (case-insensitive compare normalized to lowercase)
-- logoURI: HTTPS only; content-type image/png|image/jpeg|image/svg+xml; size <= 256KB; no data: URIs
-- links (extensions.*): HTTPS only; valid hostname; reject URL shorteners for official links
+- logoURI: HTTPS only; content-type image/png|image/jpeg/image/svg+xml; size <= 256KB; no data: URIs
+- links (extensions.\*): HTTPS only; valid hostname; reject URL shorteners for official links
 - addedAt/signedAt: valid ISO-8601 UTC
 - tags: from controlled set: {"auto","verified","partner","community","wormhole","original-registry"} (extensible)
 - signature: if present, value must verify against canonical token JSON (stable key order; exclude `signature`)
 - banned merge: tokens in banned must be excluded from `all` and `strict`
 
 ## 4. Composition rules
+
 - all = (auto + verified + partners + community) - banned
-- strict = filter(all) by: verified == true OR tags ∈ allowlist({"partner","community","wormhole","original-registry"})
+- strict = filter(all) by: verified == true
 - sort: verified first, then by liquidity/usage (future), else alphabetically (symbol/name)
 
 ## 5. Publishing & caching
+
 - ETag + Cache-Control
   - all.json: 5–10 minutes
   - strict.json: 15–30 minutes
@@ -110,6 +121,7 @@ Example top-level shapes
 - Optional top-level version field or changelog.md with adds/removals/edits
 
 ## 6. Security & integrity
+
 - Denylist path for takedowns
 - Collision handling: highlight verified token; mark lookalikes
 - Logo fetcher with MIME sniffing and size caps
