@@ -22,15 +22,35 @@ jobs:
           node-version: 20
           cache: yarn
 
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Yarn 4.5.2
+        run: corepack prepare yarn@4.5.2 --activate
+
       - name: Install deps
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
+
+      - name: Check required secrets
+        run: |
+          KEY="${{ secrets.BLOCKBERRY_API_KEY }}"
+          if [ -z "$KEY" ]; then
+            KEY="${{ vars.BLOCKBERRY_API_KEY }}"
+          fi
+          if [ -z "$KEY" ]; then
+            echo "::error::Missing BLOCKBERRY_API_KEY. Add it as a Secret (preferred) or a Variable in Settings > Secrets and variables > Actions."
+            exit 1
+          fi
 
       - name: Run discovery
-        env:
-          BLOCKBERRY_API_KEY: ${{ secrets.BLOCKBERRY_API_KEY }}
-          # Optional guardrail to avoid runaway loops; adjust as needed
-          # BLOCKBERRY_MAX_PAGES: "5000"
-        run: yarn discover
+        # Optional guardrail to avoid runaway loops; adjust as needed
+        # BLOCKBERRY_MAX_PAGES: "5000"
+        run: |
+          export BLOCKBERRY_API_KEY="${{ secrets.BLOCKBERRY_API_KEY }}"
+          if [ -z "$BLOCKBERRY_API_KEY" ]; then
+            export BLOCKBERRY_API_KEY="${{ vars.BLOCKBERRY_API_KEY }}"
+          fi
+          yarn discover
 
       - name: Commit changes
         run: |

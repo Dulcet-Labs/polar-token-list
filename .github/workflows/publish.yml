@@ -27,8 +27,14 @@ jobs:
           node-version: 20
           cache: "yarn"
 
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Yarn 4.5.2
+        run: corepack prepare yarn@4.5.2 --activate
+
       - name: Install deps
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Typecheck
         run: yarn typecheck
