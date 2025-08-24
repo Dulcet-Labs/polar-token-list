@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit",
-    "index": "node src/index.ts"
+    "index": "node src/index.ts",
+    "compose": "yarn build && node dist/index.js"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
