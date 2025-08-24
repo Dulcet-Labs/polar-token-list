@@ -29,30 +29,44 @@ async function main() {
   const tokensPathJson = path.join(dataDir, "tokens.json");
   const bannedPathJson = path.join(dataDir, "banned.json");
   const tokensPathCsv = path.join(dataDir, "validated-tokens.csv");
+  const discoveredPathCsv = path.join(dataDir, "discovered-tokens.csv");
   const bannedPathCsv = path.join(dataDir, "banned-tokens.csv");
 
-  let tokens: Token[];
+  // Load discovered tokens (optional)
+  let discovered: Token[] = [];
+  if (await fileExists(discoveredPathCsv)) {
+    discovered = (await readTokensFromCsv(discoveredPathCsv)).map((t) => ({
+      ...t,
+      name: t.name?.trim(),
+      symbol: t.symbol?.trim(),
+      objectId: t.objectId?.toLowerCase(),
+    }));
+  }
+
+  // Load manual/validated tokens (CSV preferred, then JSON)
+  let manual: Token[] = [];
   if (await fileExists(tokensPathCsv)) {
-    tokens = (await readTokensFromCsv(tokensPathCsv)).map((t) => ({
+    manual = (await readTokensFromCsv(tokensPathCsv)).map((t) => ({
       ...t,
       name: t.name?.trim(),
       symbol: t.symbol?.trim(),
       objectId: t.objectId?.toLowerCase(),
     }));
   } else if (await fileExists(tokensPathJson)) {
-    tokens = (await readJson<Token[]>(tokensPathJson)).map((t) => ({
+    manual = (await readJson<Token[]>(tokensPathJson)).map((t) => ({
       ...t,
       name: t.name?.trim(),
       symbol: t.symbol?.trim(),
       objectId: t.objectId?.toLowerCase(),
     }));
-  } else {
-    tokens = [];
   }
+
+  // Merge with precedence: manual overrides discovered (last-write-wins in dedupe)
+  const inputTokens: Token[] = [...discovered, ...manual];
 
   // Validate tokens and filter out invalid with warnings
   const validTokens: Token[] = [];
-  for (const t of tokens) {
+  for (const t of inputTokens) {
     const errs = validateToken(t);
     if (errs.length > 0) {
       console.warn(
@@ -90,15 +104,19 @@ async function main() {
   // all = tokens - banned
   const allTokens = deduped.filter((t) => !bannedSet.has(t.objectId));
 
-  // strict: verified OR allowlisted tags
+  // strict: verified-only policy
   const strictTokens = allTokens.filter((t) => isStrictEligible(t));
+
+  // Sort outputs for stability
+  const allTokensSorted = [...allTokens].sort(cmpToken);
+  const strictTokensSorted = [...strictTokens].sort(cmpToken);
 
   const now = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
   const allList: OutputList = {
     name: "Polar All Tokens",
     chain: "sui",
     updatedAt: now,
-    tokens: allTokens,
+    tokens: allTokensSorted,
   };
 
   const strictList: OutputList = {
@@ -106,7 +124,7 @@ async function main() {
     chain: "sui",
     updatedAt: now,
     filters: ["verified"],
-    tokens: strictTokens,
+    tokens: strictTokensSorted,
   };
 
   await writeJson(path.join(distDir, "all.json"), allList);

@@ -7,7 +7,11 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit",
     "index": "node src/index.ts",
-    "compose": "yarn build && node dist/index.js"
+    "compose": "yarn build && node dist/index.js",
+    "discover": "yarn build && node dist/scripts/discover.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

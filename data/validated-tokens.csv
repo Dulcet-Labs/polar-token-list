@@ -1,3 +1,1 @@
 name,symbol,decimals,objectId,logoURI,verified,verifiedBy,addedAt,tags,website,twitter,github,discord,telegram,description,version
-PolarToken,POL,6,0x1234abcd1234abcd1234abcd1234abcd1234abcd,https://cdn.polar.io/pol.png,true,adminID,2025-08-24T08:00:00Z,"verified,community",https://polar.io,https://x.com/polar,,,,,1
-NewToken,NTK,6,0x5678efab5678efab5678efab5678efab5678efab,,false,,2025-08-24T08:15:00Z,auto,,,,,,,

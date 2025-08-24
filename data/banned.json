@@ -1,8 +1,1 @@
-{
-  "name": "Polar Banned Tokens",
-  "chain": "sui",
-  "updatedAt": "2025-08-24T08:10:00Z",
-  "banned": [
-    { "objectId": "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef", "reason": "phishing", "addedAt": "2025-08-24T08:05:00Z" }
-  ]
-}
+{}

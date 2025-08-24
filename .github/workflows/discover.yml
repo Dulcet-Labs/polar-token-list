@@ -1,0 +1,58 @@
+name: Discover Tokens
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # every 6 hours
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+
+      - name: Run discovery
+        env:
+          BLOCKBERRY_API_KEY: ${{ secrets.BLOCKBERRY_API_KEY }}
+          # Optional guardrail to avoid runaway loops; adjust as needed
+          # BLOCKBERRY_MAX_PAGES: "5000"
+        run: yarn discover
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/discovered-tokens.csv
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "chore: update discovered tokens"
+
+      - name: Create Pull Request
+        if: success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/update-discovered-tokens
+          title: "Update discovered tokens"
+          commit-message: "chore: update discovered tokens"
+          body: |
+            Automated token discovery update.
+            - Source: Blockberry
+            - Command: `yarn discover`
+          add-paths: |
+            data/discovered-tokens.csv
