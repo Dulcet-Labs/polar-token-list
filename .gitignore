@@ -9,5 +9,16 @@
 # In that case, don't forget to run `yarn config set enableGlobalCache false`!
 # Documentation here: https://yarnpkg.com/features/caching#zero-installs
 
-#!.yarn/cache
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
 .pnp.*
+
+# Build output
+dist/
+node_modules/
+build/
+coverage/
+logs/
+.env

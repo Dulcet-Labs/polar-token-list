@@ -1,4 +1,15 @@
 {
   "name": "polar-token-list",
-  "packageManager": "yarn@4.5.2"
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "yarn@4.5.2",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "index": "node src/index.ts "
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
+  }
 }
