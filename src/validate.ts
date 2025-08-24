@@ -9,6 +9,8 @@ export function isIsoDate(s: string): boolean {
   return /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/.test(s);
 }
 
+import { ALLOW_TAGS } from "./compose";
+
 export function validateToken(t: Token): string[] {
   const errs: string[] = [];
   if (!t.name || t.name.trim().length === 0) errs.push("name required");
@@ -19,5 +21,14 @@ export function validateToken(t: Token): string[] {
     errs.push("objectId must be 0x-prefixed lowercase hex");
   if (!isIsoDate(t.addedAt)) errs.push("addedAt must be ISO-8601 UTC");
   if (typeof t.verified !== "boolean") errs.push("verified boolean required");
+
+  if (t.tags) {
+    for (const tag of t.tags) {
+      if (!ALLOW_TAGS.has(tag)) {
+        errs.push(`invalid tag: ${tag}`);
+      }
+    }
+  }
+
   return errs;
 }

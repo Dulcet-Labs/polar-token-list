@@ -43,26 +43,8 @@ jobs:
       - name: Install deps
         run: corepack yarn install --immutable
 
-      - name: Check required secrets
-        run: |
-          KEY="${{ secrets.BLOCKBERRY_API_KEY }}"
-          if [ -z "$KEY" ]; then
-            KEY="${{ vars.BLOCKBERRY_API_KEY }}"
-          fi
-          if [ -z "$KEY" ]; then
-            echo "::error::Missing BLOCKBERRY_API_KEY. Add it as a Secret (preferred) or a Variable in Settings > Secrets and variables > Actions."
-            exit 1
-          fi
-
       - name: Run discovery
-        # Optional guardrail to avoid runaway loops; adjust as needed
-        # BLOCKBERRY_MAX_PAGES: "5000"
-        run: |
-          export BLOCKBERRY_API_KEY="${{ secrets.BLOCKBERRY_API_KEY }}"
-          if [ -z "$BLOCKBERRY_API_KEY" ]; then
-            export BLOCKBERRY_API_KEY="${{ vars.BLOCKBERRY_API_KEY }}"
-          fi
-          corepack yarn discover
+        run: corepack yarn discover
 
       - name: Commit changes
         run: |
@@ -84,7 +66,7 @@ jobs:
           commit-message: "chore: update discovered tokens"
           body: |
             Automated token discovery update.
-            - Source: Blockberry
+            - Source: Sui RPC
             - Command: `yarn discover`
           add-paths: |
             data/discovered-tokens.csv
