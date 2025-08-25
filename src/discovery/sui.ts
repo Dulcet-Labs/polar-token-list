@@ -2,9 +2,7 @@ import {
   SuiClient,
   SuiObjectResponse,
   getFullnodeUrl,
-  PaginatedEvents,
-  SuiEvent,
-  EventId,
+  PaginatedObjectsResponse,
 } from "@mysten/sui/client";
 import { DiscoveryProvider, DiscoveredCoin } from "./provider";
 
@@ -39,36 +37,27 @@ export class SuiRpcProvider implements DiscoveryProvider {
 
   async discover(): Promise<DiscoveredCoin[]> {
     const coins: DiscoveredCoin[] = [];
-    let cursor: EventId | null = null;
+    let cursor: string | null = null;
     let hasNextPage = true;
 
     while (hasNextPage) {
-      const response: PaginatedEvents = await this.suiClient.call('suix_queryEvents', [
-        { MoveEventType: '0x2::object::NewObject' },
+      const response: PaginatedObjectsResponse = await (
+        this.suiClient as any
+      ).queryObjects({
+        options: {
+          showType: true,
+          showContent: true,
+        },
+        filter: {
+          StructType: COIN_METADATA_TYPE,
+        },
         cursor,
-        100, // limit
-        false, // descending
-      ]);
+      });
 
-      for (const event of response.data) {
-        if (
-          event.type === '0x2::object::NewObject' &&
-          event.parsedJson &&
-          typeof event.parsedJson === 'object' &&
-          'object_type' in event.parsedJson &&
-          typeof event.parsedJson.object_type === 'string' &&
-          event.parsedJson.object_type.startsWith(COIN_METADATA_TYPE) &&
-          'object_id' in event.parsedJson &&
-          typeof event.parsedJson.object_id === 'string'
-        ) {
-          const object = await this.suiClient.getObject({
-            id: event.parsedJson.object_id,
-            options: { showContent: true, showType: true },
-          });
-          const coin = this.parseCoinMetadata(object);
-          if (coin) {
-            coins.push(coin);
-          }
+      for (const object of response.data) {
+        const coin = this.parseCoinMetadata(object);
+        if (coin) {
+          coins.push(coin);
         }
       }
 
@@ -79,9 +68,7 @@ export class SuiRpcProvider implements DiscoveryProvider {
     return coins;
   }
 
-  private parseCoinMetadata(
-    object: SuiObjectResponse
-  ): DiscoveredCoin | null {
+  private parseCoinMetadata(object: SuiObjectResponse): DiscoveredCoin | null {
     if (
       !object.data ||
       object.data.content?.dataType !== "moveObject" ||
