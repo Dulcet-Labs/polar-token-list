@@ -2,8 +2,10 @@ import {
   SuiClient,
   SuiObjectResponse,
   getFullnodeUrl,
-  PaginatedObjectsResponse,
-} from "@mysten/sui.js/client";
+  PaginatedEvents,
+  SuiEvent,
+  EventId,
+} from "@mysten/sui/client";
 import { DiscoveryProvider, DiscoveredCoin } from "./provider";
 
 // The type of the CoinMetadata struct is 0x2::coin::CoinMetadata<T>
@@ -37,27 +39,36 @@ export class SuiRpcProvider implements DiscoveryProvider {
 
   async discover(): Promise<DiscoveredCoin[]> {
     const coins: DiscoveredCoin[] = [];
-    let cursor: string | null = null;
+    let cursor: EventId | null = null;
     let hasNextPage = true;
 
     while (hasNextPage) {
-      const response: PaginatedObjectsResponse = await (
-        this.suiClient as any
-      ).queryObjects({
-        options: {
-          showType: true,
-          showContent: true,
-        },
-        filter: {
-          StructType: COIN_METADATA_TYPE,
-        },
+      const response: PaginatedEvents = await this.suiClient.call('suix_queryEvents', [
+        { MoveEventType: '0x2::object::NewObject' },
         cursor,
-      });
+        100, // limit
+        false, // descending
+      ]);
 
-      for (const object of response.data) {
-        const coin = this.parseCoinMetadata(object);
-        if (coin) {
-          coins.push(coin);
+      for (const event of response.data) {
+        if (
+          event.type === '0x2::object::NewObject' &&
+          event.parsedJson &&
+          typeof event.parsedJson === 'object' &&
+          'object_type' in event.parsedJson &&
+          typeof event.parsedJson.object_type === 'string' &&
+          event.parsedJson.object_type.startsWith(COIN_METADATA_TYPE) &&
+          'object_id' in event.parsedJson &&
+          typeof event.parsedJson.object_id === 'string'
+        ) {
+          const object = await this.suiClient.getObject({
+            id: event.parsedJson.object_id,
+            options: { showContent: true, showType: true },
+          });
+          const coin = this.parseCoinMetadata(object);
+          if (coin) {
+            coins.push(coin);
+          }
         }
       }
 
