@@ -1,7 +1,7 @@
 import "dotenv/config";
 import path from "path";
 import { toTokenRows, writeDiscoveredCsv } from "../discovery/provider";
-import { SuiRpcProvider } from "../discovery/sui";
+import { BlockberryProvider } from "../discovery/blockberry";
 import { fileExists, readBannedFromCsv, readTokensFromCsv } from "../io";
 import { Token } from "../types";
 
@@ -17,9 +17,18 @@ async function main() {
   const knownObjectIds = new Set<string>();
 
   const [discovered, validated, banned] = await Promise.all([
-    (async () => (await fileExists(discoveredCsv)) ? readTokensFromCsv(discoveredCsv) : [])(),
-    (async () => (await fileExists(validatedCsv)) ? readTokensFromCsv(validatedCsv) : [])(),
-    (async () => (await fileExists(bannedCsv)) ? readBannedFromCsv(bannedCsv) : { banned: [] })(),
+    (async () =>
+      (await fileExists(discoveredCsv))
+        ? readTokensFromCsv(discoveredCsv)
+        : [])(),
+    (async () =>
+      (await fileExists(validatedCsv))
+        ? readTokensFromCsv(validatedCsv)
+        : [])(),
+    (async () =>
+      (await fileExists(bannedCsv))
+        ? readBannedFromCsv(bannedCsv)
+        : { banned: [] })(),
   ]);
 
   for (const token of [...discovered, ...validated]) {
@@ -31,10 +40,13 @@ async function main() {
 
   console.log(`Found ${knownObjectIds.size} existing token IDs.`);
 
-  // 2. Discover new tokens from the Sui RPC.
-  const provider = new SuiRpcProvider();
-  const discoveredCoins = await provider.discover();
-  console.log(`Discovered ${discoveredCoins.length} coins via ${provider.name}.`);
+  // 2. Discover new tokens using Blockberry only.
+  const maxPages = Number(process.env.BLOCKBERRY_MAX_PAGES || 1) || 1;
+  const provider = new BlockberryProvider();
+  const discoveredCoins = await provider.discover(maxPages);
+  console.log(
+    `Discovered ${discoveredCoins.length} coins via ${provider.name}.`
+  );
 
   // 3. Filter out known tokens.
   const newCoins = discoveredCoins.filter(

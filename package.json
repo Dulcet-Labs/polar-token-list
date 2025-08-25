@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "polar-token-list",
   "version": "0.1.0",
   "private": true,
@@ -11,7 +12,6 @@
     "discover": "yarn build && node dist/scripts/discover.js"
   },
   "dependencies": {
-    "@mysten/sui": "^1.0.0",
     "csv-parse": "^5.5.6",
     "dotenv": "^16.4.5"
   },
