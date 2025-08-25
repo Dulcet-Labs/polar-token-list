@@ -24,7 +24,8 @@ logs/
 .env
 
 #md file
-.how-jup.md*
+how-jup.md*
+Note.txt
 
 # Logs
 logs
