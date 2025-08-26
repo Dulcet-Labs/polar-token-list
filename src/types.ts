@@ -2,6 +2,7 @@ export type Token = {
   name: string;
   symbol: string;
   decimals: number;
+  coinType?: string;
   objectId: string;
   logoURI?: string;
   verified: boolean;
@@ -17,7 +18,7 @@ export type BannedList = {
   name: string;
   chain: string;
   updatedAt: string;
-  banned: { objectId: string; reason?: string; addedAt?: string }[];
+  banned: { coinType?: string; objectId: string; reason?: string; addedAt?: string }[];
 };
 
 export type OutputList = {

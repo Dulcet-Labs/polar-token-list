@@ -15,6 +15,7 @@ async function main() {
 
   // 1. Read all existing token IDs to avoid duplicates.
   const knownObjectIds = new Set<string>();
+  const knownCoinTypes = new Set<string>();
 
   const [discovered, validated, banned] = await Promise.all([
     (async () =>
@@ -33,6 +34,7 @@ async function main() {
 
   for (const token of [...discovered, ...validated]) {
     if (token.objectId) knownObjectIds.add(token.objectId);
+    if (token.coinType) knownCoinTypes.add(token.coinType);
   }
   for (const ban of banned.banned) {
     if (ban.objectId) knownObjectIds.add(ban.objectId);
@@ -57,7 +59,7 @@ async function main() {
 
   // 3. Filter out known tokens.
   const newCoins = discoveredCoins.filter(
-    (coin) => !knownObjectIds.has(coin.objectId)
+    (coin) => !knownObjectIds.has(coin.objectId) && (!coin.coinType || !knownCoinTypes.has(coin.coinType))
   );
   console.log(`Found ${newCoins.length} new tokens to add.`);
 

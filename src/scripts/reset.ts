@@ -11,6 +11,7 @@ async function writeDiscoveredHeaderOnly(filePath: string) {
     "symbol",
     "decimals",
     "objectId",
+    "coinType",
     "logoURI",
     "verified",
     "verifiedBy",
@@ -48,6 +49,7 @@ async function main() {
   const discoveredCsv = path.join(dataDir, "discovered-tokens.csv");
   const validatedCsv = path.join(dataDir, "validated-tokens.csv");
   const tokensJson = path.join(dataDir, "tokens.json");
+  const blockberryCheckpoint = path.join(dataDir, ".blockberry-checkpoint.json");
 
   // 1) Reset discovered-tokens.csv to header only
   await writeDiscoveredHeaderOnly(discoveredCsv);
@@ -58,8 +60,11 @@ async function main() {
   // 3) Reset tokens.json to empty array
   await writeEmptyTokensJson(tokensJson);
 
+  // 4) Remove pagination checkpoint so discovery starts from page 1
+  await removeIfExists(blockberryCheckpoint);
+
   console.log(
-    "Data reset complete: discovered-tokens.csv header only, tokens.json cleared, validated-tokens.csv removed if existed."
+    "Data reset complete: discovered-tokens.csv header only (with coinType), tokens.json cleared, validated-tokens.csv removed if existed, Blockberry checkpoint cleared."
   );
 }
 
