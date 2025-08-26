@@ -41,7 +41,14 @@ async function main() {
   console.log(`Found ${knownObjectIds.size} existing token IDs.`);
 
   // 2. Discover new tokens using Blockberry only.
-  const maxPages = Number(process.env.BLOCKBERRY_MAX_PAGES || 1) || 1;
+  // If BLOCKBERRY_MAX_PAGES is:
+  //  - undefined, 'all', or '0' => fetch all pages
+  //  - a positive number => fetch up to that many pages
+  const maxPagesEnv = process.env.BLOCKBERRY_MAX_PAGES;
+  const maxPages =
+    maxPagesEnv === undefined || maxPagesEnv?.toLowerCase?.() === "all" || maxPagesEnv === "0"
+      ? Number.POSITIVE_INFINITY
+      : Math.max(1, Number(maxPagesEnv));
   const provider = new BlockberryProvider();
   const discoveredCoins = await provider.discover(maxPages);
   console.log(

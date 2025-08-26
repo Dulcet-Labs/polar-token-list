@@ -5,6 +5,7 @@ interface BlockberryResponse {
   data?: BlockberryCoin[];
   result?: BlockberryCoin[];
   coins?: BlockberryCoin[];
+  content?: BlockberryCoin[];
   pagination?: {
     limit?: number;
     offset?: number;
@@ -12,6 +13,11 @@ interface BlockberryResponse {
     page?: number;
     pages?: number;
   };
+  // Some endpoints return these at the top level
+  size?: number;
+  totalPages?: number;
+  totalCount?: number;
+  page?: number;
 }
 
 interface BlockberryCoin {
@@ -56,7 +62,7 @@ export class BlockberryProvider implements DiscoveryProvider {
     }
   }
 
-  async discover(maxPages = 1): Promise<DiscoveredCoin[]> {
+  async discover(maxPages = Number.POSITIVE_INFINITY): Promise<DiscoveredCoin[]> {
     console.log(`[${this.name}] Starting token discovery, max pages: ${maxPages}`);
     
     if (!this.apiKey) {
@@ -64,16 +70,19 @@ export class BlockberryProvider implements DiscoveryProvider {
     }
 
     const allTokens: DiscoveredCoin[] = [];
-    const limit = 100; // Max items per page
+    const limit = 100; // Max items per page per Blockberry
     let offset = 0;
     let totalFetched = 0;
     let page = 1;
+    let discoveredTotalPages: number | undefined = undefined;
+    // If maxPages <= 0, we will fetch all pages (use API reported totalPages)
+    const userWantsAll = !isFinite(maxPages) || maxPages <= 0;
 
     try {
-      while (page <= maxPages) {
+      while (true) {
         console.log(`[${this.name}] Fetching page ${page} (offset: ${offset}, limit: ${limit})...`);
         
-        const pageTokens = await this.fetchTokensPage(offset, limit);
+        const { coins: pageTokens, totalPages } = await this.fetchTokensPage(offset, limit);
         
         if (pageTokens.length === 0) {
           console.log(`[${this.name}] No more tokens found, stopping`);
@@ -91,6 +100,12 @@ export class BlockberryProvider implements DiscoveryProvider {
           `[${this.name}] Page ${page}: ${validTokens.length}/${pageTokens.length} valid tokens (total: ${allTokens.length})`
         );
 
+        // Capture totalPages once available
+        if (totalPages && !discoveredTotalPages) {
+          discoveredTotalPages = totalPages;
+          console.log(`[${this.name}] API reports totalPages=${discoveredTotalPages}`);
+        }
+
         // If we got fewer tokens than requested, we've reached the end
         if (pageTokens.length < limit) {
           console.log(`[${this.name}] Reached end of results (got ${pageTokens.length} < ${limit})`);
@@ -100,8 +115,17 @@ export class BlockberryProvider implements DiscoveryProvider {
         offset += limit;
         page++;
 
+        // Check page cap: either user-defined or API reported
+        const cap = userWantsAll
+          ? (discoveredTotalPages ?? Number.POSITIVE_INFINITY)
+          : Math.min(maxPages, discoveredTotalPages ?? Number.POSITIVE_INFINITY);
+        if (page > cap) {
+          console.log(`[${this.name}] Reached page cap (${cap}). Stopping.`);
+          break;
+        }
+
         // Rate limiting between requests
-        if (page <= maxPages) {
+        if (page <= (discoveredTotalPages ?? Number.POSITIVE_INFINITY)) {
           await new Promise(resolve => setTimeout(resolve, this.rateLimitMs));
         }
       }
@@ -115,7 +139,7 @@ export class BlockberryProvider implements DiscoveryProvider {
     }
   }
 
-  private async fetchTokensPage(offset: number, limit: number): Promise<BlockberryCoin[]> {
+  private async fetchTokensPage(offset: number, limit: number): Promise<{ coins: BlockberryCoin[]; totalPages?: number; totalCount?: number; }> {
     // Use the correct API endpoint from Blockberry documentation
     const url = 'https://api.blockberry.one/sui/v1/coins';
     
@@ -146,21 +170,23 @@ export class BlockberryProvider implements DiscoveryProvider {
         throw new Error(`HTTP ${response.status}: ${response.statusText}${errorText ? ' - ' + errorText : ''}`);
       }
 
-      const data = await response.json() as any;
+      const data = await response.json() as BlockberryResponse | any;
       
       // Debug: Log the actual response structure
       console.log(`[${this.name}] Response keys:`, Object.keys(data));
       console.log(`[${this.name}] Sample response:`, JSON.stringify(data, null, 2).substring(0, 500));
       
       // Handle different response formats
-      const coins = data.data || data.result || data.coins || data.content || [];
+      const coins = (data.data || data.result || data.coins || data.content || []) as BlockberryCoin[];
+      const totalPages = (data.totalPages as number | undefined) || data.pagination?.pages;
+      const totalCount = (data.totalCount as number | undefined) || data.pagination?.total;
       
       if (!Array.isArray(coins)) {
         console.warn(`[${this.name}] Coins is not an array:`, typeof coins, coins);
-        return [];
+        return { coins: [], totalPages, totalCount };
       }
 
-      return coins;
+      return { coins, totalPages, totalCount };
     } catch (error) {
       console.error(`[${this.name}] Error fetching page (offset: ${offset}):`, error);
       throw error;
