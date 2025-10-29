@@ -103,6 +103,8 @@ export async function readTokensFromCsv(p: string): Promise<Token[]> {
       symbol: row[idx("symbol")],
       decimals: decimalsStr ? Number(decimalsStr) : 0,
       objectId: row[idx("objectId")]?.toLowerCase(),
+      coinType:
+        idx("coinType") !== -1 ? row[idx("coinType")] || undefined : undefined,
       logoURI: row[idx("logoURI")] || undefined,
       verified: /^true$/i.test(row[idx("verified")]),
       verifiedBy: row[idx("verifiedBy")] || undefined,
@@ -125,6 +127,8 @@ export async function readBannedFromCsv(p: string): Promise<BannedList> {
   }
   const banned = data.map((row) => ({
     objectId: row[idx("objectId")]?.toLowerCase(),
+    coinType:
+      idx("coinType") !== -1 ? row[idx("coinType")] || undefined : undefined,
     reason: row[idx("reason")] || undefined,
     addedAt: row[idx("addedAt")] || undefined,
   }));

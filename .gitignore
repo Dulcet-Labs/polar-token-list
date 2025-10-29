@@ -43,6 +43,15 @@ pids
 *.pid
 *.seed
 *.pid.lock
+# Large data files (CSV only - keep JSON files)
+data/discovered-tokens.csv
+data/*-tokens-full.csv
+data/all-tokens.csv
+*.csv.large
+
+# Temporary backup files
+data/*-backup.json
+data/temp-*.json
 
 # Coverage directories
 coverage
@@ -51,11 +60,14 @@ coverage
 # TypeScript
 *.tsbuildinfo
 
-# Environment files
+# Environment files (NEVER commit API keys!)
+.env
+.env.*
 .env.local
 .env.development
 .env.production
 .env.test
+.env.example.local
 
 # Editor & tooling
 .vscode/
@@ -77,3 +89,6 @@ Thumbs.db
 .nuxt/
 .vite/
 .svelte-kit/
+
+# Kiro IDE files (keep local only)
+.kiro/

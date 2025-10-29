@@ -1,7 +1,7 @@
 import "dotenv/config";
 import path from "path";
 import { toTokenRows, writeDiscoveredCsv } from "../discovery/provider";
-import { SuiRpcProvider } from "../discovery/sui";
+import { BlockberryProvider } from "../discovery/blockberry";
 import { fileExists, readBannedFromCsv, readTokensFromCsv } from "../io";
 import { Token } from "../types";
 
@@ -15,15 +15,26 @@ async function main() {
 
   // 1. Read all existing token IDs to avoid duplicates.
   const knownObjectIds = new Set<string>();
+  const knownCoinTypes = new Set<string>();
 
   const [discovered, validated, banned] = await Promise.all([
-    (async () => (await fileExists(discoveredCsv)) ? readTokensFromCsv(discoveredCsv) : [])(),
-    (async () => (await fileExists(validatedCsv)) ? readTokensFromCsv(validatedCsv) : [])(),
-    (async () => (await fileExists(bannedCsv)) ? readBannedFromCsv(bannedCsv) : { banned: [] })(),
+    (async () =>
+      (await fileExists(discoveredCsv))
+        ? readTokensFromCsv(discoveredCsv)
+        : [])(),
+    (async () =>
+      (await fileExists(validatedCsv))
+        ? readTokensFromCsv(validatedCsv)
+        : [])(),
+    (async () =>
+      (await fileExists(bannedCsv))
+        ? readBannedFromCsv(bannedCsv)
+        : { banned: [] })(),
   ]);
 
   for (const token of [...discovered, ...validated]) {
     if (token.objectId) knownObjectIds.add(token.objectId);
+    if (token.coinType) knownCoinTypes.add(token.coinType);
   }
   for (const ban of banned.banned) {
     if (ban.objectId) knownObjectIds.add(ban.objectId);
@@ -31,14 +42,24 @@ async function main() {
 
   console.log(`Found ${knownObjectIds.size} existing token IDs.`);
 
-  // 2. Discover new tokens from the Sui RPC.
-  const provider = new SuiRpcProvider();
-  const discoveredCoins = await provider.discover();
-  console.log(`Discovered ${discoveredCoins.length} coins via ${provider.name}.`);
+  // 2. Discover new tokens using Blockberry only.
+  // If BLOCKBERRY_MAX_PAGES is:
+  //  - undefined, 'all', or '0' => fetch all pages
+  //  - a positive number => fetch up to that many pages
+  const maxPagesEnv = process.env.BLOCKBERRY_MAX_PAGES;
+  const maxPages =
+    maxPagesEnv === undefined || maxPagesEnv?.toLowerCase?.() === "all" || maxPagesEnv === "0"
+      ? Number.POSITIVE_INFINITY
+      : Math.max(1, Number(maxPagesEnv));
+  const provider = new BlockberryProvider();
+  const discoveredCoins = await provider.discover(maxPages);
+  console.log(
+    `Discovered ${discoveredCoins.length} coins via ${provider.name}.`
+  );
 
   // 3. Filter out known tokens.
   const newCoins = discoveredCoins.filter(
-    (coin) => !knownObjectIds.has(coin.objectId)
+    (coin) => !knownObjectIds.has(coin.objectId) && (!coin.coinType || !knownCoinTypes.has(coin.coinType))
   );
   console.log(`Found ${newCoins.length} new tokens to add.`);
 

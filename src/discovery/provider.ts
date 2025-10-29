@@ -7,6 +7,7 @@ export type DiscoveredCoin = {
   symbol: string;
   decimals: number;
   objectId: string; // canonical ID we use (e.g., TreasuryCap object ID)
+  coinType?: string; // Sui coin type (actual coin type)
   logoURI?: string;
   website?: string;
 };
@@ -21,6 +22,7 @@ export function toTokenRows(coins: DiscoveredCoin[], nowIso: string): Token[] {
     name: c.name?.trim(),
     symbol: c.symbol?.trim(),
     decimals: Number(c.decimals) || 0,
+    coinType: c.coinType,
     objectId: c.objectId?.toLowerCase(),
     logoURI: c.logoURI,
     verified: false,
@@ -40,6 +42,7 @@ export async function writeDiscoveredCsv(
     "name",
     "symbol",
     "decimals",
+    "coinType",
     "objectId",
     "logoURI",
     "verified",
@@ -63,6 +66,7 @@ export async function writeDiscoveredCsv(
       t.name || "",
       t.symbol || "",
       String(t.decimals ?? 0),
+      t.coinType || "",
       t.objectId || "",
       t.logoURI || "",
       t.verified ? "true" : "false",
