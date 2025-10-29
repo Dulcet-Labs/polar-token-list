@@ -60,11 +60,14 @@ coverage
 # TypeScript
 *.tsbuildinfo
 
-# Environment files
+# Environment files (NEVER commit API keys!)
+.env
+.env.*
 .env.local
 .env.development
 .env.production
 .env.test
+.env.example.local
 
 # Editor & tooling
 .vscode/
@@ -86,3 +89,6 @@ Thumbs.db
 .nuxt/
 .vite/
 .svelte-kit/
+
+# Kiro IDE files (keep local only)
+.kiro/
