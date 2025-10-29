@@ -4,18 +4,18 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'data/strict-tokens.json'
-      - 'data/banned.json'
-      - 'data/verified-tokens.json'
-      - 'data/all-verified-tokens.json'
-      - 'data/polar-verified.json'
+      - 'packages/token-service/data/strict-tokens.json'
+      - 'packages/token-service/data/banned.json'
+      - 'packages/token-service/data/verified-tokens.json'
+      - 'packages/token-service/data/all-verified-tokens.json'
+      - 'packages/token-service/data/polar-verified.json'
   pull_request:
     paths:
-      - 'data/strict-tokens.json' 
-      - 'data/banned.json'
-      - 'data/verified-tokens.json'
-      - 'data/all-verified-tokens.json'
-      - 'data/polar-verified.json'
+      - 'packages/token-service/data/strict-tokens.json' 
+      - 'packages/token-service/data/banned.json'
+      - 'packages/token-service/data/verified-tokens.json'
+      - 'packages/token-service/data/all-verified-tokens.json'
+      - 'packages/token-service/data/polar-verified.json'
 
 jobs:
   generate:
@@ -62,12 +62,12 @@ jobs:
         run: corepack yarn validate
 
       - name: Generate token lists
-        run: corepack yarn generate
+        run: corepack yarn generate-lists
 
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet dist/; then
+          if git diff --quiet packages/token-service/dist/; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -77,21 +77,21 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: |
           echo "📊 Generated token lists:"
-          echo "- all.json: $(jq '.tokens | length' dist/all.json) tokens"
-          echo "- strict.json: $(jq '.tokens | length' dist/strict.json) tokens"
-          echo "- banned.json: $(jq '.banned | length' dist/banned.json) banned tokens"
+          echo "- all.json: $(jq '.tokens | length' packages/token-service/dist/all.json) tokens"
+          echo "- strict.json: $(jq '.tokens | length' packages/token-service/dist/strict.json) tokens"
+          echo "- banned.json: $(jq '.banned | length' packages/token-service/dist/banned.json) banned tokens"
 
       - name: Commit generated files
         if: steps.changes.outputs.changed == 'true' && github.event_name == 'push'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add dist/
+          git add packages/token-service/dist/
           git commit -m "🤖 Auto-generate token lists
 
-          - all.json: $(jq '.tokens | length' dist/all.json) tokens
-          - strict.json: $(jq '.tokens | length' dist/strict.json) tokens  
-          - banned.json: $(jq '.banned | length' dist/banned.json) banned tokens
+          - all.json: $(jq '.tokens | length' packages/token-service/dist/all.json) tokens
+          - strict.json: $(jq '.tokens | length' packages/token-service/dist/strict.json) tokens  
+          - banned.json: $(jq '.banned | length' packages/token-service/dist/banned.json) banned tokens
           
           Generated from commit: ${{ github.sha }}"
 
@@ -105,9 +105,9 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const allTokens = JSON.parse(fs.readFileSync('dist/all.json', 'utf8'));
-            const strictTokens = JSON.parse(fs.readFileSync('dist/strict.json', 'utf8'));
-            const bannedTokens = JSON.parse(fs.readFileSync('dist/banned.json', 'utf8'));
+            const allTokens = JSON.parse(fs.readFileSync('packages/token-service/dist/all.json', 'utf8'));
+            const strictTokens = JSON.parse(fs.readFileSync('packages/token-service/dist/strict.json', 'utf8'));
+            const bannedTokens = JSON.parse(fs.readFileSync('packages/token-service/dist/banned.json', 'utf8'));
             
             const comment = `## 🤖 Token Lists Generated
             

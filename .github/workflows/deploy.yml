@@ -51,7 +51,7 @@ jobs:
         run: corepack yarn build
 
       - name: Generate token lists
-        run: corepack yarn generate
+        run: corepack yarn generate-lists
 
       - name: Prepare deployment files
         run: |
@@ -60,8 +60,8 @@ jobs:
           # Create deployment directory
           mkdir -p deploy
           
-          # Copy token lists
-          cp dist/*.json deploy/
+          # Copy token lists from token service
+          cp packages/token-service/dist/*.json deploy/
           
           # Create index.html for GitHub Pages
           cat > deploy/index.html << 'EOF'

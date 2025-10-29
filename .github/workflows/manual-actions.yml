@@ -67,17 +67,17 @@ jobs:
           echo "Target count: ${{ github.event.inputs.target_count }}"
           
           # Backup current file
-          cp data/all-verified-tokens.json data/all-verified-tokens.backup.json || echo "No existing file"
+          cp packages/token-service/data/all-verified-tokens.json packages/token-service/data/all-verified-tokens.backup.json || echo "No existing file"
           
           # Sync from BlockBerry
-          corepack yarn discover-all-verified
+          corepack yarn workspace @polar/token-service discover-all-verified
           
           # Copy to main file
-          cp data/all-verified-tokens.json data/verified-tokens.json
+          cp packages/token-service/data/all-verified-tokens.json packages/token-service/data/verified-tokens.json
           
           # Show changes
-          OLD_COUNT=$(jq '. | length' data/all-verified-tokens.backup.json 2>/dev/null || echo "0")
-          NEW_COUNT=$(jq '. | length' data/all-verified-tokens.json)
+          OLD_COUNT=$(jq '. | length' packages/token-service/data/all-verified-tokens.backup.json 2>/dev/null || echo "0")
+          NEW_COUNT=$(jq '. | length' packages/token-service/data/all-verified-tokens.json)
           echo "📊 Token count: $OLD_COUNT → $NEW_COUNT"
         env:
           BLOCKBERRY_API_KEY: ${{ secrets.BLOCKBERRY_API_KEY }}
@@ -86,12 +86,12 @@ jobs:
         if: github.event.inputs.action == 'regenerate-lists' || github.event.inputs.action == 'sync-blockberry'
         run: |
           echo "🏗️ Regenerating token lists..."
-          corepack yarn generate
+          corepack yarn generate-lists
           
           echo "📊 Generated lists:"
-          echo "- All tokens: $(jq '.tokens | length' dist/all.json)"
-          echo "- Strict tokens: $(jq '.tokens | length' dist/strict.json)"
-          echo "- Banned tokens: $(jq '.banned | length' dist/banned.json)"
+          echo "- All tokens: $(jq '.tokens | length' packages/token-service/dist/all.json)"
+          echo "- Strict tokens: $(jq '.tokens | length' packages/token-service/dist/strict.json)"
+          echo "- Banned tokens: $(jq '.banned | length' packages/token-service/dist/banned.json)"
 
       - name: Validate only
         if: github.event.inputs.action == 'validate-only'
@@ -108,7 +108,7 @@ jobs:
           
           # Create deployment directory
           mkdir -p deploy
-          cp dist/*.json deploy/
+          cp packages/token-service/dist/*.json deploy/
           
           # Create simple index
           cat > deploy/index.html << 'EOF'
