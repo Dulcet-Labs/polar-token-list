@@ -7,9 +7,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit",
-    "generate": "yarn build && yarn generate:all && yarn generate:strict",
+    "generate": "yarn build && yarn generate:all && yarn generate:strict && yarn generate:banned",
     "generate:all": "node dist/generators/all-list.js",
     "generate:strict": "node dist/generators/strict-list.js",
+    "generate:banned": "node dist/generators/banned-list.js",
     "discover-tokens": "yarn build && node dist/discovery/sui-rpc.js",
     "research-workflow": "yarn build && node dist/research/manual-research.js",
     "scrape-suiscan": "yarn build && node dist/discovery/suiscan-scraper.js",
