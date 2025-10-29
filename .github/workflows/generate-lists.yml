@@ -8,12 +8,14 @@ on:
       - 'data/banned.json'
       - 'data/verified-tokens.json'
       - 'data/all-verified-tokens.json'
+      - 'data/polar-verified.json'
   pull_request:
     paths:
       - 'data/strict-tokens.json' 
       - 'data/banned.json'
       - 'data/verified-tokens.json'
       - 'data/all-verified-tokens.json'
+      - 'data/polar-verified.json'
 
 jobs:
   generate:
