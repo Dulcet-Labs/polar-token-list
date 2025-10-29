@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "noEmit": false,
+    "baseUrl": ".",
+    "paths": {
+      "@polar/shared/*": ["../../shared/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "../../shared/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
