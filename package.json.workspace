@@ -1,0 +1,8 @@
+{
+  "name": "polar-token-list-workspace",
+  "private": true,
+  "workspaces": [
+    ".",
+    "Admin"
+  ]
+}

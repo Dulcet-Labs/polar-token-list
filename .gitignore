@@ -92,3 +92,8 @@ Thumbs.db
 
 # Kiro IDE files (keep local only)
 .kiro/
+
+# Admin React app build files
+Admin/build/
+Admin/dist/
+Admin/node_modules/
