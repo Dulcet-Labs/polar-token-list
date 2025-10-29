@@ -36,7 +36,7 @@
   - [ ] 2.3 Create basic application structure and routing
     - Set up main App component with routing
     - Create dashboard layout with sidebar navigation
-    - Implement basic page components (Dashboard, Candidates, Verified)
+    - Implement basic page components for (PolarDEX Metrics (Future), AdminLogin with SUI Wallet using wallet connect, Only  wallet Address and username in our admin database can sign in and get in to make any changes,  Dashboard, Candidates, Verified extras) once SignIn Using wallet Signin SUI, there will be box for [Dex Metric], [Token List], [Revenue ] just the needed stuff for an Admin yh? 
     - _Requirements: 2.2, 2.3_
 
 - [ ] 3. Implement file system integration layer
