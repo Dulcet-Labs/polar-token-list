@@ -37,13 +37,28 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Yarn 4.5.2
+        run: corepack prepare yarn@4.5.2 --activate
+
+      - name: Cache Yarn
+        uses: actions/cache@v4
+        with:
+          path: |
+            .yarn/cache
+            .yarn/install-state.gz
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: corepack yarn install --immutable
 
       - name: Build project
-        run: yarn build
+        run: corepack yarn build
 
       - name: Sync BlockBerry tokens
         if: github.event.inputs.action == 'sync-blockberry'
@@ -55,7 +70,7 @@ jobs:
           cp data/all-verified-tokens.json data/all-verified-tokens.backup.json || echo "No existing file"
           
           # Sync from BlockBerry
-          yarn discover-all-verified
+          corepack yarn discover-all-verified
           
           # Copy to main file
           cp data/all-verified-tokens.json data/verified-tokens.json
@@ -71,7 +86,7 @@ jobs:
         if: github.event.inputs.action == 'regenerate-lists' || github.event.inputs.action == 'sync-blockberry'
         run: |
           echo "🏗️ Regenerating token lists..."
-          yarn generate
+          corepack yarn generate
           
           echo "📊 Generated lists:"
           echo "- All tokens: $(jq '.tokens | length' dist/all.json)"
@@ -82,8 +97,8 @@ jobs:
         if: github.event.inputs.action == 'validate-only'
         run: |
           echo "✅ Running validation..."
-          yarn validate
-          yarn typecheck
+          corepack yarn validate
+          corepack yarn typecheck
           echo "✅ Validation completed successfully"
 
       - name: Deploy to GitHub Pages

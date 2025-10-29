@@ -29,20 +29,35 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Yarn 4.5.2
+        run: corepack prepare yarn@4.5.2 --activate
+
+      - name: Cache Yarn
+        uses: actions/cache@v4
+        with:
+          path: |
+            .yarn/cache
+            .yarn/install-state.gz
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: corepack yarn install --immutable
 
       - name: Build project
-        run: yarn build
+        run: corepack yarn build
 
       - name: Backup current verified tokens
         run: |
           cp data/all-verified-tokens.json data/all-verified-tokens.backup.json || echo "No existing file to backup"
 
       - name: Sync verified tokens from BlockBerry
-        run: yarn discover-all-verified
+        run: corepack yarn discover-all-verified
         env:
           BLOCKBERRY_API_KEY: ${{ secrets.BLOCKBERRY_API_KEY }}
 
@@ -75,7 +90,7 @@ jobs:
 
       - name: Generate updated token lists
         if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
-        run: yarn generate
+        run: corepack yarn generate
 
       - name: Create Pull Request
         if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
