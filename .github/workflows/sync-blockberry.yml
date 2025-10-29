@@ -1,0 +1,130 @@
+name: Sync BlockBerry Tokens
+
+on:
+  schedule:
+    # Every Monday at 2 AM UTC
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update even if no changes'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build project
+        run: yarn build
+
+      - name: Backup current verified tokens
+        run: |
+          cp data/all-verified-tokens.json data/all-verified-tokens.backup.json || echo "No existing file to backup"
+
+      - name: Sync verified tokens from BlockBerry
+        run: yarn discover-all-verified
+        env:
+          BLOCKBERRY_API_KEY: ${{ secrets.BLOCKBERRY_API_KEY }}
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/all-verified-tokens.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in verified tokens"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in verified tokens"
+          fi
+
+      - name: Generate token count comparison
+        if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
+        id: comparison
+        run: |
+          OLD_COUNT=$(jq '. | length' data/all-verified-tokens.backup.json 2>/dev/null || echo "0")
+          NEW_COUNT=$(jq '. | length' data/all-verified-tokens.json)
+          DIFF=$((NEW_COUNT - OLD_COUNT))
+          
+          echo "old_count=$OLD_COUNT" >> $GITHUB_OUTPUT
+          echo "new_count=$NEW_COUNT" >> $GITHUB_OUTPUT
+          echo "diff=$DIFF" >> $GITHUB_OUTPUT
+
+      - name: Copy to main verified tokens file
+        if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
+        run: cp data/all-verified-tokens.json data/verified-tokens.json
+
+      - name: Generate updated token lists
+        if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
+        run: yarn generate
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: |
+            🔄 Weekly BlockBerry token sync
+            
+            - Updated verified tokens from BlockBerry API
+            - Old count: ${{ steps.comparison.outputs.old_count }}
+            - New count: ${{ steps.comparison.outputs.new_count }}
+            - Difference: ${{ steps.comparison.outputs.diff }}
+          title: "🔄 Weekly BlockBerry Token Sync"
+          body: |
+            ## 🔄 Automated BlockBerry Token Sync
+            
+            This PR contains the weekly sync of verified tokens from BlockBerry API.
+            
+            ### 📊 Changes Summary
+            - **Previous count:** ${{ steps.comparison.outputs.old_count }} tokens
+            - **New count:** ${{ steps.comparison.outputs.new_count }} tokens
+            - **Net change:** ${{ steps.comparison.outputs.diff }} tokens
+            
+            ### 📋 Updated Files
+            - `data/all-verified-tokens.json` - Fresh verified tokens from BlockBerry
+            - `data/verified-tokens.json` - Updated for list generation
+            - `dist/all.json` - Regenerated token list
+            
+            ### ✅ Next Steps
+            1. Review the changes in the updated token lists
+            2. Check for any new high-quality tokens that should be added to strict list
+            3. Merge this PR to deploy the updated token lists
+            
+            **Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+            **Trigger:** ${{ github.event_name }}
+          branch: "auto/blockberry-sync-$(date +%Y%m%d)"
+          delete-branch: true
+          labels: |
+            automated
+            token-sync
+            blockberry
+
+      - name: Cleanup backup file
+        if: always()
+        run: rm -f data/all-verified-tokens.backup.json
+
+      - name: Summary
+        if: steps.changes.outputs.changed == 'false' && github.event.inputs.force_update != 'true'
+        run: |
+          echo "✅ No changes detected in BlockBerry verified tokens"
+          echo "Current token count: $(jq '. | length' data/all-verified-tokens.json)"

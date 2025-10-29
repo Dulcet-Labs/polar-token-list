@@ -43,6 +43,15 @@ pids
 *.pid
 *.seed
 *.pid.lock
+# Large data files (CSV only - keep JSON files)
+data/discovered-tokens.csv
+data/*-tokens-full.csv
+data/all-tokens.csv
+*.csv.large
+
+# Temporary backup files
+data/*-backup.json
+data/temp-*.json
 
 # Coverage directories
 coverage

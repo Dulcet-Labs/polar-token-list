@@ -1,1 +1,6 @@
-{}
+{
+  "name": "Polar Banned Tokens",
+  "chain": "sui",
+  "updatedAt": "2025-10-29T11:40:00Z",
+  "banned": []
+}

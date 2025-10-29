@@ -1,0 +1,165 @@
+name: Validate Token Lists
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: TypeScript type checking
+        run: yarn typecheck
+
+      - name: Build project
+        run: yarn build
+
+      - name: Validate token data structure
+        run: yarn validate
+
+      - name: Check token list integrity
+        run: |
+          echo "🔍 Validating token list integrity..."
+          
+          # Check if required files exist
+          for file in "data/banned.json" "data/strict-tokens.json"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Required file missing: $file"
+              exit 1
+            fi
+          done
+          
+          # Validate JSON syntax
+          echo "📋 Validating JSON syntax..."
+          for file in data/*.json; do
+            if ! jq empty "$file" 2>/dev/null; then
+              echo "❌ Invalid JSON in $file"
+              exit 1
+            else
+              echo "✅ Valid JSON: $file"
+            fi
+          done
+
+      - name: Generate and validate output lists
+        run: |
+          echo "🏗️ Generating token lists..."
+          yarn generate
+          
+          echo "📊 Validating generated lists..."
+          
+          # Check generated files exist
+          for file in "dist/all.json" "dist/strict.json" "dist/banned.json"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Generated file missing: $file"
+              exit 1
+            fi
+          done
+          
+          # Validate generated JSON
+          for file in dist/*.json; do
+            if ! jq empty "$file" 2>/dev/null; then
+              echo "❌ Invalid generated JSON in $file"
+              exit 1
+            fi
+          done
+          
+          echo "✅ All generated files are valid"
+
+      - name: Token list statistics
+        run: |
+          echo "📈 Token List Statistics:"
+          echo "========================"
+          
+          if [ -f "dist/all.json" ]; then
+            ALL_COUNT=$(jq '.tokens | length' dist/all.json)
+            echo "📋 All tokens: $ALL_COUNT"
+          fi
+          
+          if [ -f "dist/strict.json" ]; then
+            STRICT_COUNT=$(jq '.tokens | length' dist/strict.json)
+            echo "⭐ Strict tokens: $STRICT_COUNT"
+          fi
+          
+          if [ -f "dist/banned.json" ]; then
+            BANNED_COUNT=$(jq '.banned | length' dist/banned.json)
+            echo "🚫 Banned tokens: $BANNED_COUNT"
+          fi
+          
+          echo "========================"
+
+      - name: Check for duplicate tokens
+        run: |
+          echo "🔍 Checking for duplicate tokens..."
+          
+          # Check duplicates in all.json
+          if [ -f "dist/all.json" ]; then
+            DUPLICATES=$(jq -r '.tokens[].objectId' dist/all.json | sort | uniq -d)
+            if [ -n "$DUPLICATES" ]; then
+              echo "❌ Duplicate objectIds found in all.json:"
+              echo "$DUPLICATES"
+              exit 1
+            else
+              echo "✅ No duplicates in all.json"
+            fi
+          fi
+          
+          # Check duplicates in strict.json
+          if [ -f "dist/strict.json" ]; then
+            DUPLICATES=$(jq -r '.tokens[].objectId' dist/strict.json | sort | uniq -d)
+            if [ -n "$DUPLICATES" ]; then
+              echo "❌ Duplicate objectIds found in strict.json:"
+              echo "$DUPLICATES"
+              exit 1
+            else
+              echo "✅ No duplicates in strict.json"
+            fi
+          fi
+
+      - name: Validate token schema
+        run: |
+          echo "🔍 Validating token schema..."
+          
+          # Check required fields in all.json
+          if [ -f "dist/all.json" ]; then
+            MISSING_FIELDS=$(jq -r '.tokens[] | select(.name == null or .symbol == null or .decimals == null or .objectId == null) | .objectId // "unknown"' dist/all.json)
+            if [ -n "$MISSING_FIELDS" ]; then
+              echo "❌ Tokens with missing required fields:"
+              echo "$MISSING_FIELDS"
+              exit 1
+            else
+              echo "✅ All tokens have required fields"
+            fi
+          fi
+
+      - name: Security checks
+        run: |
+          echo "🔒 Running security checks..."
+          
+          # Check for suspicious URLs
+          if [ -f "dist/all.json" ]; then
+            SUSPICIOUS_URLS=$(jq -r '.tokens[].logoURI // empty' dist/all.json | grep -E "(javascript:|data:|file:)" || true)
+            if [ -n "$SUSPICIOUS_URLS" ]; then
+              echo "❌ Suspicious URLs found:"
+              echo "$SUSPICIOUS_URLS"
+              exit 1
+            else
+              echo "✅ No suspicious URLs found"
+            fi
+          fi
+          
+          echo "✅ Security checks passed"
