@@ -6,5 +6,13 @@
     "verifiedBy": "polar",
     "verifiedAt": "2025-10-29T15:00:00Z",
     "reason": "Native SUI token"
+  },
+  {
+    "name": "mBTC",
+    "symbol": "mBTC",
+    "coinType": "0x0042c1db2eecdd8472aa2464cc3b25b39408ab6d3863bc0e574c7c7910daab09::mbtc::MBTC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-10-30T21:15:21.176Z"
   }
 ]

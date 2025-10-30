@@ -105,7 +105,7 @@ class TokenApiService {
                 verifiedAt: new Date().toISOString()
             };
 
-            // In a real implementation, this would call your backend API
+            // Call the API to add token to polar verified list
             const response = await fetch(`${this.baseUrl}/polar-verified`, {
                 method: 'POST',
                 headers: {
@@ -160,6 +160,7 @@ class TokenApiService {
      */
     async addToStrictList(token: Token): Promise<TokenApiResponse<Token>> {
         try {
+            // Call the API to add token to strict list
             const response = await fetch(`${this.baseUrl}/strict-tokens`, {
                 method: 'POST',
                 headers: {
