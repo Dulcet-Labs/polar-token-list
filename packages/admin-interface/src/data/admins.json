@@ -12,11 +12,11 @@
     },
     {
       "id": "admin-002", 
-      "walletAddress": "",
-      "username": "token-manager",
-      "email": "tokens@polardex.com", 
-      "role": "admin",
-      "permissions": ["token-management"],
+      "walletAddress": "0x09a900a4bfeed1d9883c84493106370c182e042b4285f46d31778f03c94442a8",
+      "username": "OG",
+      "email": "", 
+      "role": "super-admin",
+      "permissions": ["token-management", "revenue-view", "dex-metrics"],
       "createdAt": "2024-01-01T00:00:00Z",
       "isActive": true
     }

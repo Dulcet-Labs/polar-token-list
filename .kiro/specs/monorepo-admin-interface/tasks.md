@@ -40,7 +40,7 @@
     - _Requirements: 2.2, 2.3_
 
 - [ ] 3. Implement file system integration layer
-  - [ ] 3.1 Create token file API for reading token service data
+  - [x] 3.1 Create token file API for reading token service data
     - Implement functions to read from `packages/token-service/data/tokens.json`
     - Create functions to read verified tokens data
     - Add error handling for file system operations
@@ -60,7 +60,7 @@
     - _Requirements: 4.3, 4.4_
 
 - [ ] 4. Build admin dashboard components
-  - [ ] 4.1 Create token candidate list component
+  - [x] 4.1 Create token candidate list component
     - Build table component to display candidate tokens
     - Implement filtering by quality score, tags, and search
     - Add sorting functionality for different token properties

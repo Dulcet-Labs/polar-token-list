@@ -14,5 +14,14 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    fs: {
+      // Allow serving files from the token service data directory
+      allow: ['..', '../token-service/data']
+    }
   },
+  publicDir: 'public',
+  // Copy token service data to public directory during build
+  define: {
+    __TOKEN_SERVICE_DATA_PATH__: JSON.stringify('/packages/token-service/data')
+  }
 })

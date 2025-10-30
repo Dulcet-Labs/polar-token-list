@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BarChart3, List, DollarSign, LogOut, User, ChevronRight } from 'lucide-react';
 import type { AdminUser } from '../services/adminAuth';
+import { useTokens } from '../hooks/useTokens';
+import CandidatesPage from '../pages/candidates/CandidatesPage';
+import VerifiedPage from '../pages/verified/VerifiedPage';
 import PolarLogo from '../assets/PolarLogo.svg';
 
 interface DashboardProps {
@@ -10,6 +13,8 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ walletAddress, adminUser, onLogout }) => {
+    const [currentView, setCurrentView] = useState<'dashboard' | 'candidates' | 'verified'>('dashboard');
+    const { tokenStats, isLoadingStats } = useTokens();
     const dashboardCards = [
         {
             title: 'Dex Metrics',
@@ -36,12 +41,76 @@ const Dashboard: React.FC<DashboardProps> = ({ walletAddress, adminUser, onLogou
 
     const handleCardClick = (cardTitle: string) => {
         if (cardTitle === 'Token List') {
-            // Navigate to token list management
-            console.log('Navigate to token list');
+            setCurrentView('candidates');
         } else {
             console.log(`${cardTitle} - Coming soon`);
         }
     };
+
+    // Render different views
+    if (currentView === 'candidates') {
+        return (
+            <div className="min-h-screen bg-gray-50">
+                <header className="bg-white shadow-sm border-b border-gray-200">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between items-center h-16">
+                            <div className="flex items-center space-x-4">
+                                <button
+                                    onClick={() => setCurrentView('dashboard')}
+                                    className="flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+                                >
+                                    <img src={PolarLogo} alt="Polar Logo" className="w-8 h-8" />
+                                    <span className="text-xl font-semibold">← Back to Dashboard</span>
+                                </button>
+                            </div>
+                            <div className="flex items-center space-x-4">
+                                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                                    <User className="w-4 h-4" />
+                                    <span className="font-medium">{adminUser?.username || 'Admin'}</span>
+                                </div>
+                                <button onClick={onLogout} className="text-gray-600 hover:text-gray-900">
+                                    <LogOut className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <CandidatesPage />
+            </div>
+        );
+    }
+
+    if (currentView === 'verified') {
+        return (
+            <div className="min-h-screen bg-gray-50">
+                <header className="bg-white shadow-sm border-b border-gray-200">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between items-center h-16">
+                            <div className="flex items-center space-x-4">
+                                <button
+                                    onClick={() => setCurrentView('dashboard')}
+                                    className="flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+                                >
+                                    <img src={PolarLogo} alt="Polar Logo" className="w-8 h-8" />
+                                    <span className="text-xl font-semibold">← Back to Dashboard</span>
+                                </button>
+                            </div>
+                            <div className="flex items-center space-x-4">
+                                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                                    <User className="w-4 h-4" />
+                                    <span className="font-medium">{adminUser?.username || 'Admin'}</span>
+                                </div>
+                                <button onClick={onLogout} className="text-gray-600 hover:text-gray-900">
+                                    <LogOut className="w-4 h-4" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <VerifiedPage />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -128,16 +197,22 @@ const Dashboard: React.FC<DashboardProps> = ({ walletAddress, adminUser, onLogou
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Overview</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="text-center">
-                            <div className="text-2xl font-bold text-blue-600">--</div>
-                            <div className="text-sm text-gray-600">Pending Tokens</div>
+                            <div className="text-2xl font-bold text-blue-600">
+                                {isLoadingStats ? '...' : tokenStats.totalVerified - tokenStats.polarVerified - tokenStats.strictTokens}
+                            </div>
+                            <div className="text-sm text-gray-600">Candidate Tokens</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-2xl font-bold text-green-600">--</div>
-                            <div className="text-sm text-gray-600">Verified Tokens</div>
+                            <div className="text-2xl font-bold text-green-600">
+                                {isLoadingStats ? '...' : tokenStats.polarVerified}
+                            </div>
+                            <div className="text-sm text-gray-600">Polar Verified</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-2xl font-bold text-purple-600">--</div>
-                            <div className="text-sm text-gray-600">Total Volume</div>
+                            <div className="text-2xl font-bold text-purple-600">
+                                {isLoadingStats ? '...' : tokenStats.strictTokens}
+                            </div>
+                            <div className="text-sm text-gray-600">Strict Tokens</div>
                         </div>
                     </div>
                 </div>
