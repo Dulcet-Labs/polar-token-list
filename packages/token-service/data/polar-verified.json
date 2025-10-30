@@ -14,5 +14,13 @@
     "reason": "Bulk promoted by admin",
     "verifiedBy": "polar",
     "verifiedAt": "2025-10-30T21:15:21.176Z"
+  },
+  {
+    "name": "mETH",
+    "symbol": "mETH",
+    "coinType": "0xccd628c2334c5ed33e6c47d6c21bb664f8b6307b2ac32c2462a61f69a31ebcee::meth::METH",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-10-30T21:16:56.719Z"
   }
 ]
