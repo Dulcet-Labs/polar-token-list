@@ -56,11 +56,17 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
 
     // Handle successful connection - move to signing step
     useEffect(() => {
+        if (connected && account?.address && authStep === 'connect') {
+            setAuthStep('sign');
+        }
+    }, [connected, account, authStep]);
+
+    // Check if wallet is already connected on component mount
+    useEffect(() => {
         if (connected && account?.address) {
             setAuthStep('sign');
-            handleAuthentication();
         }
-    }, [connected, account]);
+    }, []);
 
     const handleAuthentication = async () => {
         if (!account?.address) {
@@ -110,9 +116,11 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
     const getStepMessage = () => {
         switch (authStep) {
             case 'connect':
-                return 'Connect your authorized SUI wallet to access the admin dashboard';
+                return connected && account?.address 
+                    ? 'Wallet connected! Click to authenticate and access the admin dashboard'
+                    : 'Connect your authorized SUI wallet to access the admin dashboard';
             case 'sign':
-                return 'Please sign the authentication message to verify wallet ownership';
+                return 'Click to sign the authentication message and verify wallet ownership';
             case 'complete':
                 return 'Authentication successful! Redirecting to dashboard...';
             default:
@@ -124,6 +132,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
         if (isConnecting) return 'Connecting...';
         if (isAuthenticating) return 'Authenticating...';
         if (authStep === 'sign') return 'Sign Message to Authenticate';
+        if (connected && account?.address) return 'Authenticate with Connected Wallet';
         return 'Connect SUI Wallet';
     };
 
@@ -147,6 +156,19 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
                         {authStep === 'sign' ? <Shield className="w-5 h-5" /> : <Wallet className="w-5 h-5" />}
                         <span>{getButtonText()}</span>
                     </button>
+
+                    {connected && account?.address && authStep === 'sign' && (
+                        <button
+                            onClick={() => {
+                                disconnectWallet();
+                                setAuthStep('connect');
+                                setError(null);
+                            }}
+                            className="w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-xl transition-all duration-200"
+                        >
+                            Use Different Wallet
+                        </button>
+                    )}
 
                     {connected && account?.address && (
                         <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">

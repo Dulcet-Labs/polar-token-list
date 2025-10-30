@@ -44,7 +44,7 @@ class AdminAuthService {
   generateAuthMessage(walletAddress: string): string {
     const timestamp = Date.now();
     const nonce = Math.random().toString(36).substring(2, 15);
-    
+
     return `PolarDEX Admin Authentication
 
 Wallet: ${walletAddress}
