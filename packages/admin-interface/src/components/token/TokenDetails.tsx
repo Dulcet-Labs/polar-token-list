@@ -1,0 +1,1 @@
+// Token details modal/view component

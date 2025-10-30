@@ -1,0 +1,1 @@
+// Zustand store for admin interface state

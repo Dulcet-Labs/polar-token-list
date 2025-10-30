@@ -1,0 +1,1 @@
+// Badge component for tags and status
