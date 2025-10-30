@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Wallet, Shield } from 'lucide-react';
-import { useWallet } from '@mysten/wallet-adapter-react';
+import { useCurrentAccount, useConnectWallet, useDisconnectWallet, useWallets, useSignPersonalMessage } from '@mysten/dapp-kit';
 import { adminAuthService } from '../services/adminAuth';
 import type { AdminUser } from '../services/adminAuth';
 import PolarLogo from '../assets/PolarLogo.svg';
@@ -10,29 +10,25 @@ interface AdminLoginProps {
 }
 
 const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
-    const [isConnecting, setIsConnecting] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [authStep, setAuthStep] = useState<'connect' | 'sign' | 'complete'>('connect');
 
-    // Use the official SUI wallet adapter hook
-    const {
-        wallets,
-        connect,
-        connected,
-        account,
-        disconnect
-    } = useWallet();
+    // Use dApp Kit hooks for wallet functionality
+    const currentAccount = useCurrentAccount();
+    const wallets = useWallets();
+    const { mutate: connectWallet, isPending: isConnecting } = useConnectWallet();
+    const { mutate: disconnectWallet } = useDisconnectWallet();
+    const { mutateAsync: signPersonalMessage } = useSignPersonalMessage();
+    
+    const connected = !!currentAccount;
+    const account = currentAccount;
 
     const handleConnectWallet = async () => {
-        setIsConnecting(true);
         setError(null);
 
         try {
-            // Find an installed wallet
-            const installedWallet = wallets.find(wallet => wallet.readyState === 'Installed');
-
-            if (!installedWallet) {
+            if (wallets.length === 0) {
                 setError('No SUI wallet found. Please install Sui Wallet or another compatible wallet.');
                 const shouldInstall = confirm('No SUI wallet found. Would you like to install Sui Wallet?');
                 if (shouldInstall) {
@@ -41,14 +37,20 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
                 return;
             }
 
-            // Connect to the wallet
-            await connect(installedWallet.name);
+            // Connect to the first available wallet
+            connectWallet(
+                { wallet: wallets[0] },
+                {
+                    onError: (error) => {
+                        console.error('Failed to connect wallet:', error);
+                        setError(error.message || 'Failed to connect wallet. Please try again.');
+                    }
+                }
+            );
 
         } catch (error: any) {
             console.error('Failed to connect wallet:', error);
             setError(error.message || 'Failed to connect wallet. Please try again.');
-        } finally {
-            setIsConnecting(false);
         }
     };
 
@@ -73,22 +75,18 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
             // Check if wallet is authorized first
             if (!adminAuthService.isAuthorizedWallet(account.address)) {
                 setError('Wallet address not authorized for admin access');
-                await disconnect();
+                disconnectWallet();
                 setAuthStep('connect');
                 return;
             }
 
-            // For now, we'll simulate message signing
-            // In a real implementation, you would use the wallet's signMessage function
-            const mockSignMessage = async (_message: Uint8Array) => {
-                // This would be replaced with actual wallet signing
-                return { signature: 'mock-signature-' + Date.now() };
-            };
-
-            // Authenticate with message signing
+            // Use real wallet message signing
             const result = await adminAuthService.authenticateAdmin(
                 account.address,
-                mockSignMessage
+                async (message: Uint8Array) => {
+                    const result = await signPersonalMessage({ message });
+                    return { signature: result.signature };
+                }
             );
 
             if (result.success && result.admin) {
@@ -96,13 +94,13 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
                 onLogin(account.address, result.admin);
             } else {
                 setError(result.error || 'Authentication failed');
-                await disconnect();
+                disconnectWallet();
                 setAuthStep('connect');
             }
         } catch (error: any) {
             console.error('Authentication error:', error);
             setError('Authentication failed. Please try again.');
-            await disconnect();
+            disconnectWallet();
             setAuthStep('connect');
         } finally {
             setIsAuthenticating(false);
@@ -172,7 +170,9 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
                     {/* Debug info - remove in production */}
                     <div className="text-xs text-gray-400 text-center">
                         <p>Available wallets: {wallets.length}</p>
-                        <p>Installed: {wallets.filter(w => w.readyState === 'Installed').length}</p>
+                        {wallets.length > 0 && (
+                            <p>Found: {wallets.map(w => w.name).join(', ')}</p>
+                        )}
                     </div>
                 </div>
             </div>

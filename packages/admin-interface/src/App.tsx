@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AdminLogin, Dashboard, WalletProvider } from './components';
 import type { AdminUser } from './services/adminAuth';
+import '@mysten/dapp-kit/dist/index.css';
 import './index.css';
 
 function App() {

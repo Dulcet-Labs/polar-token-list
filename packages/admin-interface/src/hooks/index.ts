@@ -1,1 +1,1 @@
-// Hooks will be added here as needed
+export { useSuiWallet } from './useSuiWallet';

@@ -1,4 +1,3 @@
-import { SuiClient } from '@mysten/sui.js/client';
 import adminsData from '../data/admins.json';
 
 export interface AdminUser {
@@ -19,7 +18,7 @@ export interface AuthenticationResult {
 }
 
 class AdminAuthService {
-  private admins: AdminUser[] = adminsData.admins;
+  private admins: AdminUser[] = adminsData.admins as AdminUser[];
 
   /**
    * Check if wallet address is authorized
@@ -112,23 +111,7 @@ This request will not trigger any blockchain transaction or cost any gas fees.`;
     }
   }
 
-  /**
-   * Verify signature (placeholder for real implementation)
-   */
-  private async verifySignature(
-    message: string,
-    signature: string,
-    walletAddress: string
-  ): Promise<boolean> {
-    // TODO: Implement actual signature verification using SUI SDK
-    // This would involve:
-    // 1. Recovering the public key from the signature
-    // 2. Verifying the signature matches the message
-    // 3. Confirming the public key corresponds to the wallet address
-    
-    // For now, return true if we have a signature
-    return signature.length > 0;
-  }
+
 
   /**
    * Get all authorized addresses
