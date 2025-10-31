@@ -31,7 +31,7 @@
     "import-verified-candidates": "yarn build && node dist/scripts/import-verified-candidates.js",
     "import-candidates-dry-run": "yarn build && node dist/scripts/import-verified-candidates.js --dry-run",
     "import-candidates-verbose": "yarn build && node dist/scripts/import-verified-candidates.js --verbose",
-    "validate": "yarn build && node dist/validate.js",
+    "validate": "node dist/validate.js",
     "index": "node src/index.ts",
     "compose": "yarn build && node dist/index.js",
     "discover": "yarn build && node dist/scripts/discover.js",
