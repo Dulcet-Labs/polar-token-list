@@ -1,4 +1,3 @@
-import adminsData from '../data/admins.json';
 
 export interface AdminUser {
   id: string;
@@ -18,12 +17,23 @@ export interface AuthenticationResult {
 }
 
 class AdminAuthService {
-  private admins: AdminUser[] = this.loadAdmins();
+  private admins: AdminUser[] = [];
+  private adminsLoaded = false;
+
+  /**
+   * Ensure admins are loaded
+   */
+  private async ensureAdminsLoaded(): Promise<void> {
+    if (!this.adminsLoaded) {
+      this.admins = await this.loadAdmins();
+      this.adminsLoaded = true;
+    }
+  }
 
   /**
    * Load admins from environment variables or fallback to JSON file
    */
-  private loadAdmins(): AdminUser[] {
+  private async loadAdmins(): Promise<AdminUser[]> {
     // Try to load from environment variables first
     const envAddresses = import.meta.env.VITE_ADMIN_WALLET_ADDRESSES;
     const envUsernames = import.meta.env.VITE_ADMIN_USERNAMES;
@@ -49,13 +59,20 @@ class AdminAuthService {
     }
 
     // Fallback to JSON file for development
-    return adminsData.admins as AdminUser[];
+    try {
+      const adminsData = await import('../data/admins.json');
+      return adminsData.default.admins as AdminUser[];
+    } catch (error) {
+      console.warn('Could not load admins.json, using empty admin list');
+      return [];
+    }
   }
 
   /**
    * Check if wallet address is authorized
    */
-  isAuthorizedWallet(address: string): boolean {
+  async isAuthorizedWallet(address: string): Promise<boolean> {
+    await this.ensureAdminsLoaded();
     return this.admins.some(
       admin => admin.walletAddress.toLowerCase() === address.toLowerCase() && admin.isActive
     );
@@ -64,7 +81,8 @@ class AdminAuthService {
   /**
    * Get admin info by wallet address
    */
-  getAdminByWallet(address: string): AdminUser | null {
+  async getAdminByWallet(address: string): Promise<AdminUser | null> {
+    await this.ensureAdminsLoaded();
     return this.admins.find(
       admin => admin.walletAddress.toLowerCase() === address.toLowerCase() && admin.isActive
     ) || null;
@@ -97,7 +115,7 @@ This request will not trigger any blockchain transaction or cost any gas fees.`;
   ): Promise<AuthenticationResult> {
     try {
       // Check if wallet is authorized
-      if (!this.isAuthorizedWallet(walletAddress)) {
+      if (!(await this.isAuthorizedWallet(walletAddress))) {
         return {
           success: false,
           error: 'Wallet address not authorized for admin access'
@@ -121,7 +139,7 @@ This request will not trigger any blockchain transaction or cost any gas fees.`;
       }
 
       // Get admin info
-      const admin = this.getAdminByWallet(walletAddress);
+      const admin = await this.getAdminByWallet(walletAddress);
       if (!admin) {
         return {
           success: false,
@@ -148,7 +166,8 @@ This request will not trigger any blockchain transaction or cost any gas fees.`;
   /**
    * Get all authorized addresses
    */
-  getAllAuthorizedAddresses(): string[] {
+  async getAllAuthorizedAddresses(): Promise<string[]> {
+    await this.ensureAdminsLoaded();
     return this.admins
       .filter(admin => admin.isActive)
       .map(admin => admin.walletAddress);
