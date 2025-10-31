@@ -147,7 +147,7 @@ jobs:
                           document.getElementById('strict-stats').textContent = 
                               `${strict.tokens.length} tokens • Updated: ${new Date(strict.updatedAt).toLocaleDateString()}`;
                           document.getElementById('polar-stats').textContent = 
-                              `${polar.tokens.length} tokens • Updated: ${new Date(polar.updatedAt).toLocaleDateString()}`;
+                              `${polar.totalCount} tokens • Updated: ${new Date(polar.updatedAt).toLocaleDateString()}`;
                           document.getElementById('banned-stats').textContent = 
                               `${banned.banned.length} banned • Updated: ${new Date(banned.updatedAt).toLocaleDateString()}`;
                       } catch (error) {
@@ -180,8 +180,11 @@ jobs:
           for file in deploy/*.json; do
             if [ -f "$file" ]; then
               filename=$(basename "$file")
-              if [[ "$filename" == "all.json" || "$filename" == "strict.json" || "$filename" == "polar-verified.json" ]]; then
+              if [[ "$filename" == "all.json" || "$filename" == "strict.json" ]]; then
                 count=$(jq '.tokens | length' "$file")
+                echo "- $filename: $count tokens"
+              elif [[ "$filename" == "polar-verified.json" ]]; then
+                count=$(jq '.totalCount' "$file")
                 echo "- $filename: $count tokens"
               elif [[ "$filename" == "banned.json" ]]; then
                 count=$(jq '.banned | length' "$file")
