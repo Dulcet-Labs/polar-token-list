@@ -3,8 +3,6 @@ name: Deploy Token Lists
 on:
   push:
     branches: [main]
-    paths: 
-      - 'dist/**'
   workflow_dispatch:
 
 jobs:
@@ -60,8 +58,14 @@ jobs:
           # Create deployment directory
           mkdir -p deploy
           
-          # Copy token lists from token service
+          # Copy all generated JSON files from token service
           cp packages/token-service/dist/*.json deploy/
+          
+          echo "✅ Generated token lists:"
+          ls -la packages/token-service/dist/*.json
+          echo ""
+          echo "📋 Copied to deploy directory:"
+          ls -la deploy/*.json
           
           # Create index.html for GitHub Pages
           cat > deploy/index.html << 'EOF'
@@ -88,27 +92,34 @@ jobs:
                   <div class="list-item">
                       <h3>📋 All Tokens</h3>
                       <p>Complete list of verified SUI tokens from BlockBerry</p>
-                      <div class="endpoint">https://your-domain.github.io/polar-token-list/all.json</div>
+                      <div class="endpoint">https://dulcet-labs.github.io/polar-token-list/all.json</div>
                       <div class="stats" id="all-stats">Loading...</div>
                   </div>
                   
                   <div class="list-item">
                       <h3>⭐ Strict Tokens</h3>
                       <p>Manually curated high-quality tokens for DEX interfaces</p>
-                      <div class="endpoint">https://your-domain.github.io/polar-token-list/strict.json</div>
+                      <div class="endpoint">https://dulcet-labs.github.io/polar-token-list/strict.json</div>
                       <div class="stats" id="strict-stats">Loading...</div>
+                  </div>
+                  
+                  <div class="list-item">
+                      <h3>🌟 Polar Verified</h3>
+                      <p>Tokens verified specifically by the Polar team</p>
+                      <div class="endpoint">https://dulcet-labs.github.io/polar-token-list/polar-verified.json</div>
+                      <div class="stats" id="polar-stats">Loading...</div>
                   </div>
                   
                   <div class="list-item">
                       <h3>🚫 Banned Tokens</h3>
                       <p>Blacklisted tokens to exclude from applications</p>
-                      <div class="endpoint">https://your-domain.github.io/polar-token-list/banned.json</div>
+                      <div class="endpoint">https://dulcet-labs.github.io/polar-token-list/banned.json</div>
                       <div class="stats" id="banned-stats">Loading...</div>
                   </div>
                   
                   <h2>📖 Usage</h2>
                   <pre><code>// Fetch all tokens
-          const response = await fetch('https://your-domain.github.io/polar-token-list/all.json');
+          const response = await fetch('https://dulcet-labs.github.io/polar-token-list/all.json');
           const tokenList = await response.json();
           console.log(`Loaded ${tokenList.tokens.length} tokens`);</code></pre>
                   
@@ -124,9 +135,10 @@ jobs:
                   // Load and display stats
                   async function loadStats() {
                       try {
-                          const [all, strict, banned] = await Promise.all([
+                          const [all, strict, polar, banned] = await Promise.all([
                               fetch('./all.json').then(r => r.json()),
                               fetch('./strict.json').then(r => r.json()),
+                              fetch('./polar-verified.json').then(r => r.json()),
                               fetch('./banned.json').then(r => r.json())
                           ]);
                           
@@ -134,6 +146,8 @@ jobs:
                               `${all.tokens.length} tokens • Updated: ${new Date(all.updatedAt).toLocaleDateString()}`;
                           document.getElementById('strict-stats').textContent = 
                               `${strict.tokens.length} tokens • Updated: ${new Date(strict.updatedAt).toLocaleDateString()}`;
+                          document.getElementById('polar-stats').textContent = 
+                              `${polar.tokens.length} tokens • Updated: ${new Date(polar.updatedAt).toLocaleDateString()}`;
                           document.getElementById('banned-stats').textContent = 
                               `${banned.banned.length} banned • Updated: ${new Date(banned.updatedAt).toLocaleDateString()}`;
                       } catch (error) {
@@ -166,7 +180,7 @@ jobs:
           for file in deploy/*.json; do
             if [ -f "$file" ]; then
               filename=$(basename "$file")
-              if [[ "$filename" == "all.json" || "$filename" == "strict.json" ]]; then
+              if [[ "$filename" == "all.json" || "$filename" == "strict.json" || "$filename" == "polar-verified.json" ]]; then
                 count=$(jq '.tokens | length' "$file")
                 echo "- $filename: $count tokens"
               elif [[ "$filename" == "banned.json" ]]; then
@@ -196,4 +210,5 @@ jobs:
           echo "🔗 Direct endpoints:"
           echo "- All tokens: ${{ steps.deployment.outputs.page_url }}all.json"
           echo "- Strict tokens: ${{ steps.deployment.outputs.page_url }}strict.json"
+          echo "- Polar verified: ${{ steps.deployment.outputs.page_url }}polar-verified.json"
           echo "- Banned tokens: ${{ steps.deployment.outputs.page_url }}banned.json"
