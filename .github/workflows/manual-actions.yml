@@ -97,7 +97,7 @@ jobs:
         if: github.event.inputs.action == 'validate-only'
         run: |
           echo "✅ Running validation..."
-          corepack yarn workspace @polar/token-service validate
+          corepack yarn validate
           corepack yarn typecheck
           echo "✅ Validation completed successfully"
 

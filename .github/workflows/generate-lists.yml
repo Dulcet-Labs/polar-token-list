@@ -59,7 +59,7 @@ jobs:
         run: corepack yarn build:token-service
 
       - name: Validate token data
-        run: corepack yarn workspace @polar/token-service validate
+        run: corepack yarn validate
 
       - name: Generate token lists
         run: corepack yarn generate-lists
