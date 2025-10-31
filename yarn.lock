@@ -5093,12 +5093,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yallist@npm:^3.0.2, yallist@npm:^4.0.0":
-  version: 3.1.1
-  resolution: "yallist@npm:3.1.1"
-  checksum: 10c0/c66a5c46bc89af1625476f7f0f2ec3653c1a1791d2f9407cfb4c2ba812a1e1c9941416d71ba9719876530e3340a99925f697142989371b72d93b9ee628afd8c1
-  languageName: node
-  linkType: hard
+
 
 "yallist@npm:^5.0.0":
   version: 5.0.0
