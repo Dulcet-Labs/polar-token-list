@@ -155,7 +155,7 @@ export class TokenMergeUtils {
     // Handle tags merging
     if (options.mergeTags && newToken.tags) {
       const existingTags = new Set(existingToken.tags || []);
-      const newTags = newToken.tags.filter(tag => !existingTags.has(tag));
+      const newTags = newToken.tags.filter((tag: any) => !existingTags.has(tag));
       
       if (newTags.length > 0) {
         mergedToken.tags = [...(existingToken.tags || []), ...newTags];

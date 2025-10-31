@@ -98,7 +98,7 @@ async function main() {
     };
   }
   const bannedSet = new Set<string>(
-    banned.banned.map((b) => b.objectId.toLowerCase())
+    banned.banned.map((b: any) => b.objectId.toLowerCase())
   );
 
   // all = tokens - banned

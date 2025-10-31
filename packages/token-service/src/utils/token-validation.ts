@@ -98,13 +98,13 @@ export class TokenValidation {
                 warnings.push('Token tags should be an array');
                 score -= 3;
             } else {
-                const invalidTags = token.tags.filter(tag => typeof tag !== 'string');
+                const invalidTags = token.tags.filter((tag: any) => typeof tag !== 'string');
                 if (invalidTags.length > 0) {
                     warnings.push('All token tags should be strings');
                     score -= 2;
                 }
 
-                const duplicateTags = token.tags.filter((tag, index) => token.tags!.indexOf(tag) !== index);
+                const duplicateTags = token.tags.filter((tag: any, index: any) => token.tags!.indexOf(tag) !== index);
                 if (duplicateTags.length > 0) {
                     warnings.push('Token has duplicate tags');
                     score -= 1;
@@ -175,7 +175,7 @@ export class TokenValidation {
 
         // Ensure tags are unique and sorted
         if (token.tags && Array.isArray(token.tags)) {
-            const uniqueTags = [...new Set(token.tags.filter(tag => typeof tag === 'string'))];
+            const uniqueTags = [...new Set(token.tags.filter((tag: any) => typeof tag === 'string'))];
             uniqueTags.sort();
 
             if (uniqueTags.length !== token.tags.length || !this.arraysEqual(uniqueTags, token.tags)) {
