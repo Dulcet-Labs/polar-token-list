@@ -45,7 +45,7 @@ jobs:
         run: corepack yarn build:token-service
 
       - name: Validate token data structure
-        run: corepack yarn validate
+        run: corepack yarn workspace @polar/token-service validate
 
       - name: Check token list integrity
         run: |
