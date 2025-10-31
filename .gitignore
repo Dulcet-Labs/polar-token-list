@@ -135,7 +135,7 @@ report.*.json
 .yarn-integrity
 
 # Kiro IDE files - ignore entire .kiro directory
-.kiro/
+# .kiro/
 
 # Legacy files from old structure
 how-jup.md*
