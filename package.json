@@ -43,6 +43,7 @@
     "typescript": "^5.9.2"
   },
   "resolutions": {
-    "yallist": "^4.0.0"
+    "yallist": "^4.0.0",
+    "glob": "^10.2.2"
   }
 }
