@@ -16,7 +16,6 @@ interface FileOperationResult<T> {
 }
 
 class FileService {
-  private tokenServicePath = '../../../token-service/data';
 
   /**
    * Read verified tokens from file system
