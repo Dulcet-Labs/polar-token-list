@@ -31,6 +31,7 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
         addToPolarVerified,
         addToStrictList,
         bulkAddToPolarVerified,
+        bulkAddToStrictList,
         isLoading: isOperationLoading
     } = useTokenOperations();
 
@@ -165,6 +166,14 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
         setSelectedTokens([]);
     };
 
+    const handleBulkPromoteToStrict = async () => {
+        const tokensToPromote = filteredAndSortedTokens
+            .filter(token => selectedTokens.includes(token.coinType || ''));
+
+        await bulkAddToStrictList.mutateAsync(tokensToPromote);
+        setSelectedTokens([]);
+    };
+
     const formatNumber = (num: number | undefined): string => {
         if (!num) return '--';
         if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
@@ -237,6 +246,22 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
                         </button>
                     </div>
                 )}
+
+                {/* Bulk Actions for Polar Verified */}
+                {selectedTokens.length > 0 && view === 'polar-verified' && (
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-600">
+                            {selectedTokens.length} selected
+                        </span>
+                        <button
+                            onClick={handleBulkPromoteToStrict}
+                            disabled={isOperationLoading}
+                            className="bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                        >
+                            Add to Strict List
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Search and Filters */}
@@ -272,7 +297,7 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
             </div>
 
             {/* Select All */}
-            {view === 'candidates' && paginatedTokens.length > 0 && (
+            {(view === 'candidates' || view === 'polar-verified') && paginatedTokens.length > 0 && (
                 <div className="flex items-center gap-2">
                     <input
                         type="checkbox"
@@ -292,7 +317,7 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
-                                {view === 'candidates' && (
+                                {(view === 'candidates' || view === 'polar-verified') && (
                                     <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">
                                         Select
                                     </th>
@@ -320,7 +345,7 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
                         <tbody className="bg-white divide-y divide-gray-200">
                             {paginatedTokens.map((token) => (
                                 <tr key={token.coinType} className="hover:bg-gray-50">
-                                    {view === 'candidates' && (
+                                    {(view === 'candidates' || view === 'polar-verified') && (
                                         <td className="px-3 py-3 whitespace-nowrap">
                                             <input
                                                 type="checkbox"
