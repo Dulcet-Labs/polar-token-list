@@ -1,42 +1,23 @@
-# PolarDEX Admin Setup Guide
+# PolarDEX Admin Interface
 
-## Adding Admin Wallet Addresses
+## For Authorized Admins Only
 
-### Step 1: Get Your SUI Wallet Address
-1. Install [Sui Wallet](https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil) browser extension
-2. Create or import your wallet
-3. Copy your wallet address (it starts with `0x` and is 64 characters long)
-   - Example: `0xa1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456`
+This admin interface is restricted to authorized PolarDEX team members only. Admin access is granted by the core team and cannot be self-assigned.
 
-### Step 2: Add Your Address to the Admin Database
+## Getting Admin Access
 
-#### Option A: Edit JSON File (Development)
-1. Copy `src/data/admins.json.example` to `src/data/admins.json`
-2. Add your admin entry to the `admins` array:
+**Admin access is invitation-only.** If you believe you should have admin access:
 
-```json
-{
-  "id": "admin-003",
-  "walletAddress": "YOUR_SUI_WALLET_ADDRESS_HERE",
-  "username": "your-username",
-  "email": "your-email@polardex.com",
-  "role": "admin",
-  "permissions": ["token-management", "revenue-view"],
-  "createdAt": "2024-01-01T00:00:00Z",
-  "isActive": true
-}
-```
+1. Contact the PolarDEX core team through official channels
+2. Provide your SUI wallet address when requested
+3. Wait for manual approval and setup by the team
+4. You will be notified when access is granted
 
-#### Option B: Environment Variables (Production)
-1. Create `.env.local` file in the admin-interface directory
-2. Add your addresses:
+## Using the Admin Interface
 
-```env
-VITE_ADMIN_WALLET_ADDRESSES=0xYOUR_ADDRESS_1,0xYOUR_ADDRESS_2
-VITE_ADMIN_USERNAMES=admin1,admin2
-```
+Once you have been granted admin access:
 
-### Step 3: Admin Roles and Permissions
+### Admin Roles and Permissions
 
 **Roles:**
 - `super-admin`: Full access to all features
@@ -48,18 +29,13 @@ VITE_ADMIN_USERNAMES=admin1,admin2
 - `revenue-view`: View revenue analytics
 - `dex-metrics`: View DEX metrics
 
-### Step 4: Test Your Setup
+### Accessing the Admin Dashboard
 
-1. Start the development server:
-   ```bash
-   yarn dev
-   ```
-
-2. Navigate to the admin login page
-3. Click "Connect SUI Wallet"
-4. Select your wallet and connect
-5. Sign the authentication message when prompted
-6. You should be logged into the admin dashboard
+1. Navigate to the admin interface
+2. Click "Connect SUI Wallet"
+3. Select your authorized wallet and connect
+4. Sign the authentication message when prompted
+5. You will be logged into the admin dashboard if your wallet is authorized
 
 ### Authentication Flow
 
@@ -78,9 +54,9 @@ VITE_ADMIN_USERNAMES=admin1,admin2
 ### Troubleshooting
 
 **"Wallet address not authorized"**
-- Check that your wallet address is correctly added to `admins.json`
-- Ensure the address format is correct (0x + 64 hex characters)
-- Verify `isActive` is set to `true`
+- Your wallet address has not been granted admin access
+- Contact the PolarDEX team if you believe this is an error
+- Only authorized team members can access the admin interface
 
 **"No SUI wallet found"**
 - Install Sui Wallet browser extension
@@ -92,20 +68,14 @@ VITE_ADMIN_USERNAMES=admin1,admin2
 - Ensure wallet is properly connected
 - Try disconnecting and reconnecting
 
-### Production Deployment
+### For Core Team Members Only
 
-For production:
-1. Use environment variables instead of JSON files
-2. Implement proper signature verification
-3. Add database integration for admin management
-4. Set up proper logging and monitoring
+Admin access management is restricted to core team members. If you need to grant admin access to someone:
 
-### Adding New Admins (For Super Admins)
-
-1. Get the new admin's SUI wallet address
-2. Add them to the admin database with appropriate role and permissions
-3. Notify them of their access and provide this setup guide
-4. Test their access before granting production permissions
+1. Verify their identity and authorization level
+2. Contact the technical team for wallet address setup
+3. Test their access in a development environment first
+4. Monitor their access and permissions regularly
 
 ## Support
 

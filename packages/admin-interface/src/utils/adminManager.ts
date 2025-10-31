@@ -12,49 +12,23 @@ export interface NewAdminData {
 }
 
 /**
- * Instructions for adding new admins to the system
+ * Admin setup information (for authorized team members only)
  */
 export const ADMIN_SETUP_INSTRUCTIONS = `
-# How to Add New Admin Wallet Addresses
+# Admin Access Management
 
-## Method 1: Edit the JSON file directly
-1. Open: packages/admin-interface/src/data/admins.json
-2. Add a new admin object to the "admins" array:
+Admin access is restricted to authorized PolarDEX team members only.
 
-{
-  "id": "admin-003",
-  "walletAddress": "YOUR_SUI_WALLET_ADDRESS_HERE",
-  "username": "your-username",
-  "email": "your-email@polardex.com",
-  "role": "admin",
-  "permissions": ["token-management"],
-  "createdAt": "2024-01-01T00:00:00Z",
-  "isActive": true
-}
-
-## Method 2: Use environment variables (recommended for production)
-1. Create/edit: packages/admin-interface/.env.local
-2. Add: VITE_ADMIN_WALLET_ADDRESSES=address1,address2,address3
-3. Add: VITE_ADMIN_USERNAMES=username1,username2,username3
-
-## Getting Your SUI Wallet Address:
-1. Install Sui Wallet extension
-2. Create/import your wallet
-3. Copy your wallet address (starts with 0x, 64 characters long)
-4. Add it to the admin database
-
-## Testing the Setup:
-1. Add your wallet address to admins.json
-2. Start the app: yarn dev
-3. Connect with your wallet
-4. Sign the authentication message
-5. You should be logged into the admin dashboard
+## For Core Team Members:
+- Admin wallet addresses are managed through secure environment variables
+- Contact the technical team for admin access setup
+- Never commit sensitive wallet addresses to public repositories
 
 ## Security Notes:
-- Never commit real wallet addresses to public repositories
-- Use environment variables for production
+- All admin access is invitation-only
 - Each admin must sign a message to prove wallet ownership
-- Admins can be deactivated by setting "isActive": false
+- Admins can be deactivated by the core team
+- Regular access audits are performed
 `;
 
 /**
