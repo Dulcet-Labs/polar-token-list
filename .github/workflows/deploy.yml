@@ -180,7 +180,10 @@ jobs:
           for file in deploy/*.json; do
             if [ -f "$file" ]; then
               filename=$(basename "$file")
-              if [[ "$filename" == "all.json" || "$filename" == "strict.json" || "$filename" == "polar-verified.json" ]]; then
+              if [[ "$filename" == "all.json" || "$filename" == "strict.json" ]]; then
+                count=$(jq '.tokens | length' "$file")
+                echo "- $filename: $count tokens"
+              elif [[ "$filename" == "polar-verified.json" ]]; then
                 count=$(jq '.tokens | length' "$file")
                 echo "- $filename: $count tokens"
               elif [[ "$filename" == "banned.json" ]]; then

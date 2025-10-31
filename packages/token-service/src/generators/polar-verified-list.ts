@@ -15,7 +15,8 @@ interface PolarVerifiedList {
   chain: string;
   updatedAt: string;
   description: string;
-  verifiedTokens: PolarVerifiedToken[];
+  tokens: PolarVerifiedToken[];
+  verifiedTokens: PolarVerifiedToken[]; // Keep for backward compatibility
   totalCount: number;
 }
 
@@ -47,7 +48,8 @@ export function generatePolarVerifiedList(): PolarVerifiedList {
     chain: 'sui',
     updatedAt: new Date().toISOString(),
     description: 'Tokens verified by Polar team - eligible for checkmark in Polar DEX UI',
-    verifiedTokens: validTokens,
+    tokens: validTokens,
+    verifiedTokens: validTokens, // Keep for backward compatibility
     totalCount: validTokens.length
   };
 }
