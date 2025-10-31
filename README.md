@@ -1,29 +1,6 @@
-# Polar Token List Monorepo
+# Polar Token List
 
 A comprehensive, community-maintained token list for the Sui blockchain, providing standardized token metadata for easy integration into wallets, DEXs, and other dApps.
-
-## 🏗️ Monorepo Structure
-
-This repository contains two main packages:
-
-```
-polar-token-list/
-├── packages/
-│   ├── token-service/          # Node.js/TypeScript token list service
-│   │   ├── src/               # Core token list logic
-│   │   ├── data/              # Token data files
-│   │   ├── dist/              # Generated token lists
-│   │   └── README.md          # Token service documentation
-│   └── admin-interface/        # React-based admin dashboard
-│       ├── src/               # React application
-│       ├── public/            # Static assets
-│       └── dist/              # Built admin interface
-├── shared/                     # Shared types and utilities
-│   ├── types/                 # Common TypeScript interfaces
-│   ├── utils/                 # Shared utility functions
-│   └── configs/               # Shared configurations
-└── README.md                  # This file
-```
 
 ## 🚀 Quick Start
 
@@ -110,26 +87,72 @@ A React-based web dashboard for managing token verification and reviewing candid
 
 ## 🌐 Usage
 
+> Note: There are several places a token list may be served from:
+> - Raw file in this repository (raw.githubusercontent.com)
+> - GitHub Pages / CDN / Static hosting under your domain
+> - GitHub API (for programmatic retrieval)
+> 
+> Below are practical curl and code examples for each case and troubleshooting tips.
+
 ### JavaScript/TypeScript
 
+Use the appropriate URL for where you host the list. Example using the repository raw file (replace `main` with your default branch if different):
+
 ```javascript
-const TOKEN_LIST_URL = "https://your-domain.com/polar-token-list/strict.json";
+// Example: raw GitHub URL to the strict list (served as raw JSON)
+const TOKEN_LIST_URL = "https://raw.githubusercontent.com/Dulcet-Labs/polar-token-list/main/packages/token-service/dist/strict.json";
 
 async function getTokenList() {
   const response = await fetch(TOKEN_LIST_URL);
   if (!response.ok) {
-    throw new Error(`Failed to fetch token list: ${response.statusText}`);
+    throw new Error(`Failed to fetch token list: ${response.status} ${response.statusText}`);
   }
   return response.json();
 }
 ```
 
-### Command Line
+### Command Line (curl)
 
+- Recommended: use raw.githubusercontent.com when pointing to a file in the repo:
 ```bash
-# Get token list info
-curl -sSL https://your-domain.com/polar-token-list/strict.json | jq
+# Raw GitHub-hosted file (read-only)
+curl -L -f "https://raw.githubusercontent.com/Dulcet-Labs/polar-token-list/main/packages/token-service/dist/strict.json" | jq
 ```
+
+- If you have the GitHub "blob" URL (HTML), convert it to raw or use the /raw/ path:
+  - Browser blob URL:
+    https://github.com/Dulcet-Labs/polar-token-list/blob/main/packages/token-service/dist/strict.json
+  - Raw equivalent:
+    https://raw.githubusercontent.com/Dulcet-Labs/polar-token-list/main/packages/token-service/dist/strict.json
+  - Or:
+    https://github.com/Dulcet-Labs/polar-token-list/raw/main/packages/token-service/dist/strict.json
+
+- GitHub API (returns raw content when you request the raw media type):
+```bash
+curl -H "Accept: application/vnd.github.v3.raw" -L \
+  "https://api.github.com/repos/Dulcet-Labs/polar-token-list/contents/packages/token-service/dist/strict.json" \
+  -o strict.json
+```
+
+- Private repo or rate-limited requests (use a token):
+```bash
+curl -H "Authorization: token YOUR_GITHUB_TOKEN" -L \
+  "https://raw.githubusercontent.com/Dulcet-Labs/polar-token-list/main/packages/token-service/dist/strict.json" \
+  -o strict.json
+```
+
+Helpful flags:
+- -L : follow redirects
+- -f : fail on HTTP error codes (so script exits non-zero on 4xx/5xx)
+- -sS: silent but show errors
+
+### Troubleshooting
+
+- You get HTML instead of JSON: you're using a "blob" (web) URL. Switch to raw.githubusercontent.com or the /raw/ path.
+- 404 Not Found: confirm branch name (main/master), file path, and filename (case-sensitive).
+- 401/403: the repo or file is private or you're rate-limited. Use an authenticated request or host the list on a public CDN.
+- CORS errors (in browser): CORS is enforced by browsers; curl/server-side fetches ignore CORS. If you need browser access, serve the JSON from a host that sets Access-Control-Allow-Origin: * (e.g., GitHub Pages, your CDN).
+- Rate limiting by GitHub API: authenticate with a token or use a CDN to host the published lists.
 
 ## 🔐 Environment Setup
 
