@@ -58,7 +58,7 @@ jobs:
         run: corepack yarn install
 
       - name: Build project
-        run: corepack yarn build
+        run: corepack yarn build:token-service
 
       - name: Sync BlockBerry tokens
         if: github.event.inputs.action == 'sync-blockberry'

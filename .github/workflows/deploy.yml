@@ -48,7 +48,7 @@ jobs:
         run: corepack yarn install
 
       - name: Build project
-        run: corepack yarn build
+        run: corepack yarn build:token-service
 
       - name: Generate token lists
         run: corepack yarn generate-lists
