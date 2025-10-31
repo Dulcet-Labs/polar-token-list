@@ -58,14 +58,9 @@ class AdminAuthService {
       }));
     }
 
-    // Fallback to JSON file for development
-    try {
-      const adminsData = await import('../data/admins.json');
-      return adminsData.default.admins as AdminUser[];
-    } catch (error) {
-      console.warn('Could not load admins.json, using empty admin list');
-      return [];
-    }
+    // No fallback - admins must be configured via environment variables
+    console.warn('No admin wallet addresses configured in environment variables');
+    return [];
   }
 
   /**
