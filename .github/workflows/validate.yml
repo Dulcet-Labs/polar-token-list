@@ -31,9 +31,9 @@ jobs:
           path: |
             .yarn/cache
             .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-v2-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-yarn-v2-
 
       - name: Install dependencies
         run: corepack yarn install
