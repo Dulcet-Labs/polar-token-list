@@ -80,6 +80,7 @@ jobs:
           echo "- all.json: $(jq '.tokens | length' packages/token-service/dist/all.json) tokens"
           echo "- strict.json: $(jq '.tokens | length' packages/token-service/dist/strict.json) tokens"
           echo "- banned.json: $(jq '.banned | length' packages/token-service/dist/banned.json) banned tokens"
+          echo "- polar-verified.json: $(jq '.totalCount' packages/token-service/dist/polar-verified.json) tokens"
 
       - name: Commit generated files
         if: steps.changes.outputs.changed == 'true' && github.event_name == 'push'
@@ -92,6 +93,7 @@ jobs:
           - all.json: $(jq '.tokens | length' packages/token-service/dist/all.json) tokens
           - strict.json: $(jq '.tokens | length' packages/token-service/dist/strict.json) tokens  
           - banned.json: $(jq '.banned | length' packages/token-service/dist/banned.json) banned tokens
+          - polar-verified.json: $(jq '.totalCount' packages/token-service/dist/polar-verified.json) tokens
           
           Generated from commit: ${{ github.sha }}"
 
@@ -108,6 +110,7 @@ jobs:
             const allTokens = JSON.parse(fs.readFileSync('packages/token-service/dist/all.json', 'utf8'));
             const strictTokens = JSON.parse(fs.readFileSync('packages/token-service/dist/strict.json', 'utf8'));
             const bannedTokens = JSON.parse(fs.readFileSync('packages/token-service/dist/banned.json', 'utf8'));
+            const polarVerifiedTokens = JSON.parse(fs.readFileSync('packages/token-service/dist/polar-verified.json', 'utf8'));
             
             const comment = `## 🤖 Token Lists Generated
             
@@ -116,6 +119,7 @@ jobs:
             | All Tokens | ${allTokens.tokens.length} | ✅ |
             | Strict Tokens | ${strictTokens.tokens.length} | ✅ |
             | Banned Tokens | ${bannedTokens.banned.length} | ✅ |
+            | Polar Verified | ${polarVerifiedTokens.totalCount} | ✅ |
             
             **Updated:** ${new Date().toISOString()}
             

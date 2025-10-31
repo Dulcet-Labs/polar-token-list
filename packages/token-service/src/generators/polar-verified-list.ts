@@ -60,6 +60,7 @@ export function writePolarVerifiedList(outputPath?: string): void {
   console.log(`Generated polar-verified.json with ${polarList.totalCount} Polar-verified tokens`);
 }
 
-if (require.main === module) {
+// Run if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
   writePolarVerifiedList();
 }

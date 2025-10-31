@@ -46,6 +46,7 @@ export function writeBannedList(outputPath?: string): void {
   console.log(`Generated banned.json with ${bannedList.banned.length} banned tokens`);
 }
 
-if (require.main === module) {
+// Run if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
   writeBannedList();
 }

@@ -88,6 +88,7 @@ export function writeStrictList(outputPath?: string): void {
   console.log(`Generated strict.json with ${strictList.tokens.length} tokens`);
 }
 
-if (require.main === module) {
+// Run if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
   writeStrictList();
 }

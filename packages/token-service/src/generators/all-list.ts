@@ -82,6 +82,7 @@ export function writeAllList(outputPath?: string): void {
   console.log(`Generated all.json with ${allList.tokens.length} tokens`);
 }
 
-if (require.main === module) {
+// Run if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
   writeAllList();
 }
