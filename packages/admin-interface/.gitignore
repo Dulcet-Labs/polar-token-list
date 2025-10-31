@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment files with sensitive data
+.env.local
+.env.production
+
+# Admin data files (keep local, don't commit)
+src/data/admins.json

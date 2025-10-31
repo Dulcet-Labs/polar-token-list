@@ -18,7 +18,39 @@ export interface AuthenticationResult {
 }
 
 class AdminAuthService {
-  private admins: AdminUser[] = adminsData.admins as AdminUser[];
+  private admins: AdminUser[] = this.loadAdmins();
+
+  /**
+   * Load admins from environment variables or fallback to JSON file
+   */
+  private loadAdmins(): AdminUser[] {
+    // Try to load from environment variables first
+    const envAddresses = import.meta.env.VITE_ADMIN_WALLET_ADDRESSES;
+    const envUsernames = import.meta.env.VITE_ADMIN_USERNAMES;
+    const envEmails = import.meta.env.VITE_ADMIN_EMAILS;
+    const envRoles = import.meta.env.VITE_ADMIN_ROLES;
+
+    if (envAddresses) {
+      const addresses = envAddresses.split(',').map((addr: string) => addr.trim());
+      const usernames = envUsernames ? envUsernames.split(',').map((name: string) => name.trim()) : [];
+      const emails = envEmails ? envEmails.split(',').map((email: string) => email.trim()) : [];
+      const roles = envRoles ? envRoles.split(',').map((role: string) => role.trim()) : [];
+
+      return addresses.map((address: string, index: number) => ({
+        id: `env-admin-${index + 1}`,
+        walletAddress: address,
+        username: usernames[index] || `Admin${index + 1}`,
+        email: emails[index] || '',
+        role: (roles[index] as 'super-admin' | 'admin' | 'moderator') || 'admin',
+        permissions: ['token-management', 'revenue-view', 'dex-metrics'],
+        createdAt: new Date().toISOString(),
+        isActive: true
+      }));
+    }
+
+    // Fallback to JSON file for development
+    return adminsData.admins as AdminUser[];
+  }
 
   /**
    * Check if wallet address is authorized

@@ -1,0 +1,19 @@
+{
+  "admins": [
+    {
+      "id": "admin-001",
+      "walletAddress": "0x[YOUR_SUI_WALLET_ADDRESS_HERE]",
+      "username": "YourUsername",
+      "email": "your.email@example.com",
+      "role": "super-admin",
+      "permissions": ["token-management", "revenue-view", "dex-metrics"],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "isActive": true
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2024-01-01T00:00:00Z",
+    "description": "PolarDEX Admin Database - Copy this to admins.json and add your real SUI wallet addresses"
+  }
+}

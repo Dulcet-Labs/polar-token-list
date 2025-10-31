@@ -11,7 +11,7 @@
 ### Step 2: Add Your Address to the Admin Database
 
 #### Option A: Edit JSON File (Development)
-1. Open `src/data/admins.json`
+1. Copy `src/data/admins.json.example` to `src/data/admins.json`
 2. Add your admin entry to the `admins` array:
 
 ```json
