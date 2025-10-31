@@ -8,23 +8,23 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces run build",
+    "build": "yarn workspaces foreach --all run build",
     "build:token-service": "yarn workspace @polar/token-service build",
     "build:admin": "yarn workspace @polar/admin-interface build",
     "dev": "yarn workspace @polar/admin-interface dev",
     "dev:admin": "yarn workspace @polar/admin-interface dev",
     "dev:token-service": "yarn workspace @polar/token-service dev",
-    "typecheck": "yarn workspaces run typecheck",
+    "typecheck": "yarn workspaces foreach --all run typecheck",
     "typecheck:token-service": "yarn workspace @polar/token-service typecheck",
     "typecheck:admin": "yarn workspace @polar/admin-interface typecheck",
-    "clean": "yarn workspaces run clean",
+    "clean": "yarn workspaces foreach --all run clean",
     "clean:token-service": "yarn workspace @polar/token-service clean",
     "clean:admin": "yarn workspace @polar/admin-interface clean",
-    "test": "yarn workspaces run test",
+    "test": "yarn workspaces foreach --all run test",
     "test:token-service": "yarn workspace @polar/token-service test",
     "test:admin": "yarn workspace @polar/admin-interface test",
-    "lint": "yarn workspaces run lint",
-    "lint:fix": "yarn workspaces run lint:fix",
+    "lint": "yarn workspaces foreach --all run lint",
+    "lint:fix": "yarn workspaces foreach --all run lint:fix",
     "generate-lists": "yarn workspace @polar/token-service generate",
     "import-candidates": "yarn workspace @polar/token-service import-verified-candidates",
     "import-candidates-dry-run": "yarn workspace @polar/token-service import-candidates-dry-run",
@@ -41,5 +41,8 @@
     "eslint": "^8.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.9.2"
+  },
+  "resolutions": {
+    "myallist": "^4.0.0"
   }
 }
