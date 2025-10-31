@@ -134,9 +134,8 @@ report.*.json
 # Yarn Integrity file
 .yarn-integrity
 
-# Kiro IDE files (keep workspace settings but ignore cache)
-.kiro/cache/
-.kiro/logs/
+# Kiro IDE files - ignore entire .kiro directory
+.kiro/
 
 # Legacy files from old structure
 how-jup.md*
