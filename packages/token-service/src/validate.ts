@@ -1,4 +1,14 @@
-import { Token } from "./types";
+import { Token } from "./types.js";
+import * as fs from "fs";
+import * as path from "path";
+
+const ALLOW_TAGS = new Set([
+  "auto",
+  "partner", 
+  "community",
+  "original-registry",
+  "verified",
+]);
 
 export function isHexLower(s: string): boolean {
   return /^0x[a-f0-9]+$/.test(s);
@@ -8,8 +18,6 @@ export function isIsoDate(s: string): boolean {
   // Basic ISO-8601 check
   return /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/.test(s);
 }
-
-import { ALLOW_TAGS } from "./compose";
 
 export function validateToken(t: Token): string[] {
   const errs: string[] = [];

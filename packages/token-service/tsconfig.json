@@ -15,14 +15,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "outDir": "./dist",
+    "rootDir": "./src",
     "baseUrl": ".",
     "paths": {
       "@polar/shared/*": ["../../shared/*"]
     }
   },
   "include": [
-    "src/**/*",
-    "../../shared/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
