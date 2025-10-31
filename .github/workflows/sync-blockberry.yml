@@ -2,8 +2,8 @@ name: Sync BlockBerry Tokens
 
 on:
   schedule:
-    # Every Monday at 2 AM UTC
-    - cron: '0 2 * * 1'
+    # Every day at 2 AM UTC
+    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       force_update:
@@ -42,29 +42,29 @@ jobs:
           path: |
             .yarn/cache
             .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-v2-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-yarn-v2-
 
       - name: Install dependencies
-        run: corepack yarn install --immutable
+        run: corepack yarn install
 
       - name: Build project
-        run: corepack yarn build
+        run: corepack yarn build:token-service
 
       - name: Backup current verified tokens
         run: |
-          cp data/all-verified-tokens.json data/all-verified-tokens.backup.json || echo "No existing file to backup"
+          cp packages/token-service/data/all-verified-tokens.json packages/token-service/data/all-verified-tokens.backup.json || echo "No existing file to backup"
 
       - name: Sync verified tokens from BlockBerry
-        run: corepack yarn discover-all-verified
+        run: corepack yarn workspace @polar/token-service discover-all-verified
         env:
           BLOCKBERRY_API_KEY: ${{ secrets.BLOCKBERRY_API_KEY }}
 
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/all-verified-tokens.json; then
+          if git diff --quiet packages/token-service/data/all-verified-tokens.json; then
             echo "changed=false" >> $GITHUB_OUTPUT
             echo "No changes detected in verified tokens"
           else
@@ -76,8 +76,8 @@ jobs:
         if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
         id: comparison
         run: |
-          OLD_COUNT=$(jq '. | length' data/all-verified-tokens.backup.json 2>/dev/null || echo "0")
-          NEW_COUNT=$(jq '. | length' data/all-verified-tokens.json)
+          OLD_COUNT=$(jq '. | length' packages/token-service/data/all-verified-tokens.backup.json 2>/dev/null || echo "0")
+          NEW_COUNT=$(jq '. | length' packages/token-service/data/all-verified-tokens.json)
           DIFF=$((NEW_COUNT - OLD_COUNT))
           
           echo "old_count=$OLD_COUNT" >> $GITHUB_OUTPUT
@@ -86,11 +86,11 @@ jobs:
 
       - name: Copy to main verified tokens file
         if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
-        run: cp data/all-verified-tokens.json data/verified-tokens.json
+        run: cp packages/token-service/data/all-verified-tokens.json packages/token-service/data/verified-tokens.json
 
       - name: Generate updated token lists
         if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
-        run: corepack yarn generate
+        run: corepack yarn generate-lists
 
       - name: Create Pull Request
         if: steps.changes.outputs.changed == 'true' || github.event.inputs.force_update == 'true'
@@ -98,17 +98,17 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: |
-            🔄 Weekly BlockBerry token sync
+            🔄 Daily BlockBerry token sync
             
             - Updated verified tokens from BlockBerry API
             - Old count: ${{ steps.comparison.outputs.old_count }}
             - New count: ${{ steps.comparison.outputs.new_count }}
             - Difference: ${{ steps.comparison.outputs.diff }}
-          title: "🔄 Weekly BlockBerry Token Sync"
+          title: "🔄 Daily BlockBerry Token Sync"
           body: |
             ## 🔄 Automated BlockBerry Token Sync
             
-            This PR contains the weekly sync of verified tokens from BlockBerry API.
+            This PR contains the daily sync of verified tokens from BlockBerry API.
             
             ### 📊 Changes Summary
             - **Previous count:** ${{ steps.comparison.outputs.old_count }} tokens
@@ -116,9 +116,9 @@ jobs:
             - **Net change:** ${{ steps.comparison.outputs.diff }} tokens
             
             ### 📋 Updated Files
-            - `data/all-verified-tokens.json` - Fresh verified tokens from BlockBerry
-            - `data/verified-tokens.json` - Updated for list generation
-            - `dist/all.json` - Regenerated token list
+            - `packages/token-service/data/all-verified-tokens.json` - Fresh verified tokens from BlockBerry
+            - `packages/token-service/data/verified-tokens.json` - Updated for list generation
+            - `packages/token-service/dist/all.json` - Regenerated token list
             
             ### ✅ Next Steps
             1. Review the changes in the updated token lists
@@ -136,10 +136,10 @@ jobs:
 
       - name: Cleanup backup file
         if: always()
-        run: rm -f data/all-verified-tokens.backup.json
+        run: rm -f packages/token-service/data/all-verified-tokens.backup.json
 
       - name: Summary
         if: steps.changes.outputs.changed == 'false' && github.event.inputs.force_update != 'true'
         run: |
           echo "✅ No changes detected in BlockBerry verified tokens"
-          echo "Current token count: $(jq '. | length' data/all-verified-tokens.json)"
+          echo "Current token count: $(jq '. | length' packages/token-service/data/all-verified-tokens.json)"

@@ -1,3 +1,12 @@
+# Dependencies
+node_modules/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Yarn v4 specific
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -5,60 +14,18 @@
 !.yarn/sdks
 !.yarn/versions
 
-# Swap the comments on the following lines if you wish to use zero-installs
-# In that case, don't forget to run `yarn config set enableGlobalCache false`!
-# Documentation here: https://yarnpkg.com/features/caching#zero-installs
-
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
-
-# Build output
+# Build outputs - monorepo structure
 dist/
-node_modules/
 build/
-coverage/
-logs/
-.env
-
-#md file
-how-jup.md*
-Note.txt
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.*.json
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-# Large data files (CSV only - keep JSON files)
-data/discovered-tokens.csv
-data/*-tokens-full.csv
-data/all-tokens.csv
-*.csv.large
-
-# Temporary backup files
-data/*-backup.json
-data/temp-*.json
-
-# Coverage directories
-coverage
-.nyc_output
+packages/*/dist/
+packages/*/build/
+packages/token-service/dist/
+packages/admin-interface/dist/
+packages/admin-interface/build/
 
 # TypeScript
 *.tsbuildinfo
+packages/*/*.tsbuildinfo
 
 # Environment files (NEVER commit API keys!)
 .env
@@ -69,31 +36,107 @@ coverage
 .env.test
 .env.example.local
 
+# Token service specific data files
+packages/token-service/data/discovered-tokens.csv
+packages/token-service/data/*-tokens-full.csv
+packages/token-service/data/all-tokens.csv
+packages/token-service/data/*-backup.json
+packages/token-service/data/temp-*.json
+packages/token-service/data/fast-*.json
+packages/token-service/data/all-verified-tokens.json
+*.csv.large
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directories
+coverage/
+.nyc_output
+*.lcov
+
 # Editor & tooling
-.vscode/
+.vscode/settings.json.bak
 .idea/
 .eslintcache
 .stylelintcache
 
 # OS files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
 # Caches
 .cache/
 .parcel-cache/
 .turbo/
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
 
-# Framework outputs (harmless if unused)
+# Framework outputs
 .next/
 .nuxt/
 .vite/
 .svelte-kit/
 
-# Kiro IDE files (keep local only)
-.kiro/
+# React specific
+packages/admin-interface/.vite/
+packages/admin-interface/node_modules/
 
-# Admin React app build files
-Admin/build/
-Admin/dist/
-Admin/node_modules/
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Test outputs
+test-results/
+playwright-report/
+
+# Diagnostic reports
+report.*.json
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Kiro IDE files - ignore entire .kiro directory
+# .kiro/
+
+# Legacy files from old structure
+how-jup.md*
+Note.txt

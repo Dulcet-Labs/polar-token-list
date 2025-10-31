@@ -40,18 +40,18 @@ jobs:
           path: |
             .yarn/cache
             .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-v2-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-yarn-v2-
 
       - name: Install dependencies
-        run: corepack yarn install --immutable
+        run: corepack yarn install
 
       - name: Build project
-        run: corepack yarn build
+        run: corepack yarn build:token-service
 
       - name: Generate token lists
-        run: corepack yarn generate
+        run: corepack yarn generate-lists
 
       - name: Prepare deployment files
         run: |
@@ -60,8 +60,8 @@ jobs:
           # Create deployment directory
           mkdir -p deploy
           
-          # Copy token lists
-          cp dist/*.json deploy/
+          # Copy token lists from token service
+          cp packages/token-service/dist/*.json deploy/
           
           # Create index.html for GitHub Pages
           cat > deploy/index.html << 'EOF'

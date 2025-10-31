@@ -1,0 +1,11 @@
+{
+  "admins": [
+    {
+      "address": "0x1234567890abcdef1234567890abcdef12345678",
+      "username": "dev-admin",
+      "role": "super-admin",
+      "email": "admin@polardex.com"
+    }
+  ],
+  "note": "Add your real SUI wallet addresses here. SUI addresses are 64 characters long and start with 0x"
+}

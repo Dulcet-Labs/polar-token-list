@@ -31,18 +31,18 @@ jobs:
           path: |
             .yarn/cache
             .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-v2-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-yarn-v2-
 
       - name: Install dependencies
-        run: corepack yarn install --immutable
+        run: corepack yarn install
 
       - name: TypeScript type checking
         run: corepack yarn typecheck
 
       - name: Build project
-        run: corepack yarn build
+        run: corepack yarn build:token-service
 
       - name: Validate token data structure
         run: corepack yarn validate
@@ -52,7 +52,7 @@ jobs:
           echo "🔍 Validating token list integrity..."
           
           # Check if required files exist
-          for file in "data/banned.json" "data/strict-tokens.json"; do
+          for file in "packages/token-service/data/banned.json" "packages/token-service/data/strict-tokens.json"; do
             if [ ! -f "$file" ]; then
               echo "❌ Required file missing: $file"
               exit 1
@@ -61,7 +61,7 @@ jobs:
           
           # Validate JSON syntax
           echo "📋 Validating JSON syntax..."
-          for file in data/*.json; do
+          for file in packages/token-service/data/*.json; do
             if ! jq empty "$file" 2>/dev/null; then
               echo "❌ Invalid JSON in $file"
               exit 1
@@ -73,12 +73,12 @@ jobs:
       - name: Generate and validate output lists
         run: |
           echo "🏗️ Generating token lists..."
-          corepack yarn generate
+          corepack yarn generate-lists
           
           echo "📊 Validating generated lists..."
           
           # Check generated files exist
-          for file in "dist/all.json" "dist/strict.json" "dist/banned.json"; do
+          for file in "packages/token-service/dist/all.json" "packages/token-service/dist/strict.json" "packages/token-service/dist/banned.json"; do
             if [ ! -f "$file" ]; then
               echo "❌ Generated file missing: $file"
               exit 1
@@ -86,7 +86,7 @@ jobs:
           done
           
           # Validate generated JSON
-          for file in dist/*.json; do
+          for file in packages/token-service/dist/*.json; do
             if ! jq empty "$file" 2>/dev/null; then
               echo "❌ Invalid generated JSON in $file"
               exit 1
@@ -100,18 +100,18 @@ jobs:
           echo "📈 Token List Statistics:"
           echo "========================"
           
-          if [ -f "dist/all.json" ]; then
-            ALL_COUNT=$(jq '.tokens | length' dist/all.json)
+          if [ -f "packages/token-service/dist/all.json" ]; then
+            ALL_COUNT=$(jq '.tokens | length' packages/token-service/dist/all.json)
             echo "📋 All tokens: $ALL_COUNT"
           fi
           
-          if [ -f "dist/strict.json" ]; then
-            STRICT_COUNT=$(jq '.tokens | length' dist/strict.json)
+          if [ -f "packages/token-service/dist/strict.json" ]; then
+            STRICT_COUNT=$(jq '.tokens | length' packages/token-service/dist/strict.json)
             echo "⭐ Strict tokens: $STRICT_COUNT"
           fi
           
-          if [ -f "dist/banned.json" ]; then
-            BANNED_COUNT=$(jq '.banned | length' dist/banned.json)
+          if [ -f "packages/token-service/dist/banned.json" ]; then
+            BANNED_COUNT=$(jq '.banned | length' packages/token-service/dist/banned.json)
             echo "🚫 Banned tokens: $BANNED_COUNT"
           fi
           
@@ -122,8 +122,8 @@ jobs:
           echo "🔍 Checking for duplicate tokens..."
           
           # Check duplicates in all.json
-          if [ -f "dist/all.json" ]; then
-            DUPLICATES=$(jq -r '.tokens[].objectId' dist/all.json | sort | uniq -d)
+          if [ -f "packages/token-service/dist/all.json" ]; then
+            DUPLICATES=$(jq -r '.tokens[].objectId' packages/token-service/dist/all.json | sort | uniq -d)
             if [ -n "$DUPLICATES" ]; then
               echo "❌ Duplicate objectIds found in all.json:"
               echo "$DUPLICATES"
@@ -134,8 +134,8 @@ jobs:
           fi
           
           # Check duplicates in strict.json
-          if [ -f "dist/strict.json" ]; then
-            DUPLICATES=$(jq -r '.tokens[].objectId' dist/strict.json | sort | uniq -d)
+          if [ -f "packages/token-service/dist/strict.json" ]; then
+            DUPLICATES=$(jq -r '.tokens[].objectId' packages/token-service/dist/strict.json | sort | uniq -d)
             if [ -n "$DUPLICATES" ]; then
               echo "❌ Duplicate objectIds found in strict.json:"
               echo "$DUPLICATES"
@@ -150,8 +150,8 @@ jobs:
           echo "🔍 Validating token schema..."
           
           # Check required fields in all.json
-          if [ -f "dist/all.json" ]; then
-            MISSING_FIELDS=$(jq -r '.tokens[] | select(.name == null or .symbol == null or .decimals == null or .objectId == null) | .objectId // "unknown"' dist/all.json)
+          if [ -f "packages/token-service/dist/all.json" ]; then
+            MISSING_FIELDS=$(jq -r '.tokens[] | select(.name == null or .symbol == null or .decimals == null or .objectId == null) | .objectId // "unknown"' packages/token-service/dist/all.json)
             if [ -n "$MISSING_FIELDS" ]; then
               echo "❌ Tokens with missing required fields:"
               echo "$MISSING_FIELDS"
