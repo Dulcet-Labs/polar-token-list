@@ -1,8 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Search, CheckCircle, Shield, Lock, ExternalLink, TrendingUp } from 'lucide-react';
+import { Search, CheckCircle, Lock, ExternalLink, TrendingUp } from 'lucide-react';
 import { useTokens } from '../../hooks/useTokens';
 import { useTokenOperations } from '../../hooks/useTokenOperations';
 import type { Token } from '@polar/shared/types/token';
+import PolarVerifiedIcon from '../../assets/polarVerified.svg';
 
 interface TokenListProps {
     view: 'candidates' | 'polar-verified' | 'strict';
@@ -18,10 +19,11 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
 
     const {
         candidateTokens,
+        verifiedTokens,
+        polarVerifiedTokens,
         strictTokens,
         isLoading,
         error,
-        isPolarVerified,
         getTokenVerificationStatus
     } = useTokens();
 
@@ -38,13 +40,18 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
             case 'candidates':
                 return candidateTokens;
             case 'polar-verified':
-                return candidateTokens.filter(token => isPolarVerified(token.coinType || ''));
+                // Get full token details for polar verified tokens
+                if (!polarVerifiedTokens || !verifiedTokens) return [];
+                const polarCoinTypes = new Set(polarVerifiedTokens.map(t => t.coinType));
+                return verifiedTokens.filter(token =>
+                    token.coinType && polarCoinTypes.has(token.coinType)
+                );
             case 'strict':
                 return strictTokens;
             default:
                 return candidateTokens;
         }
-    }, [view, candidateTokens, strictTokens, isPolarVerified]);
+    }, [view, candidateTokens, verifiedTokens, polarVerifiedTokens, strictTokens]);
 
     // Filter and sort tokens
     const filteredAndSortedTokens = useMemo(() => {
@@ -173,7 +180,11 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
             case 'strict':
                 return <div title="Strict Token"><Lock className="w-4 h-4 text-purple-600" /></div>;
             case 'polar':
-                return <div title="Polar Verified"><Shield className="w-4 h-4 text-blue-600" /></div>;
+                return (
+                    <div title="Polar Verified">
+                        <img src={PolarVerifiedIcon} alt="Polar Verified" className="w-5 h-5" />
+                    </div>
+                );
             default:
                 return <div title="BlockBerry Verified"><CheckCircle className="w-4 h-4 text-green-600" /></div>;
         }
@@ -376,6 +387,15 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
                                                     Add to Strict
                                                 </button>
                                             </>
+                                        )}
+                                        {view === 'polar-verified' && (
+                                            <button
+                                                onClick={() => handlePromoteToStrict(token)}
+                                                disabled={isOperationLoading}
+                                                className="text-purple-600 hover:text-purple-900 disabled:text-purple-400"
+                                            >
+                                                Add to Strict
+                                            </button>
                                         )}
                                         <button className="text-gray-600 hover:text-gray-900">
                                             <ExternalLink className="w-4 h-4" />
