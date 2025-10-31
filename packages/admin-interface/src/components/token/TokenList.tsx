@@ -23,9 +23,7 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
         polarVerifiedTokens,
         strictTokens,
         isLoading,
-        error,
-        getTokenVerificationStatus
-    } = useTokens();
+        error    } = useTokens();
 
     const {
         addToPolarVerified,
@@ -183,20 +181,44 @@ const TokenList: React.FC<TokenListProps> = ({ view }) => {
     };
 
     const getVerificationBadge = (token: Token) => {
-        const status = getTokenVerificationStatus(token.coinType || '');
+        const coinType = token.coinType || '';
 
-        switch (status) {
-            case 'strict':
-                return <div title="Strict Token"><Lock className="w-4 h-4 text-purple-600" /></div>;
-            case 'polar':
-                return (
-                    <div title="Polar Verified">
-                        <img src={PolarVerifiedIcon} alt="Polar Verified" className="w-5 h-5" />
-                    </div>
-                );
-            default:
-                return <div title="BlockBerry Verified"><CheckCircle className="w-4 h-4 text-green-600" /></div>;
+        // Check individual statuses
+        const isPolar = polarVerifiedTokens?.some(t => t.coinType === coinType) || false;
+        const isStrict = strictTokens?.some(t => t.coinType === coinType) || false;
+
+        const badges = [];
+
+        // For polar verified tokens, show polar badge (not blockberry)
+        if (isPolar) {
+            badges.push(
+                <div key="polar" title="Polar Verified">
+                    <img src={PolarVerifiedIcon} alt="Polar Verified" className="w-4 h-4" />
+                </div>
+            );
+        } else {
+            // For non-polar tokens, show BlockBerry verified as base
+            badges.push(
+                <div key="blockberry" title="BlockBerry Verified">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                </div>
+            );
         }
+
+        // Add Strict badge if in strict list
+        if (isStrict) {
+            badges.push(
+                <div key="strict" title="Strict Token">
+                    <Lock className="w-4 h-4 text-purple-600" />
+                </div>
+            );
+        }
+
+        return (
+            <div className="flex items-center gap-1">
+                {badges}
+            </div>
+        );
     };
 
     if (isLoading) {
