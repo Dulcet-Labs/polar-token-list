@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: corepack yarn install --immutable
+        run: corepack yarn install
 
       - name: TypeScript type checking
         run: corepack yarn typecheck

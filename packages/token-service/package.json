@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "private": true,
   "main": "dist/index.js",
-
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json --watch",
