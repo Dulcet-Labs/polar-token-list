@@ -56,8 +56,9 @@ The core Node.js service that manages token discovery, validation, and list gene
 - Automated discovery and import workflows
 
 **Available Lists:**
-- **`all.json`** - All known non-banned tokens on Sui
-- **`strict.json`** - Verified tokens only (recommended for most use cases)
+- **`all.json`** - All known non-banned tokens on Sui (879 tokens)
+- **`strict.json`** - Manually curated verified tokens (3 tokens)
+- **`polar-verified.json`** - Tokens verified by Polar team (16 tokens)
 - **`banned.json`** - List of known malicious or problematic tokens
 
 [📖 Token Service Documentation](./packages/token-service/README.md)
@@ -85,74 +86,94 @@ A React-based web dashboard for managing token verification and reviewing candid
 | `yarn discover` | Discover new tokens |
 | `yarn validate` | Validate all token lists |
 
-## 🌐 Usage
+## 🌐 Live Token Lists
 
-> Note: There are several places a token list may be served from:
-> - Raw file in this repository (raw.githubusercontent.com)
-> - GitHub Pages / CDN / Static hosting under your domain
-> - GitHub API (for programmatic retrieval)
-> 
-> Below are practical curl and code examples for each case and troubleshooting tips.
+**🚀 Production Endpoints (GitHub Pages)**
 
-### JavaScript/TypeScript
+All token lists are automatically deployed and available at:
 
-Use the appropriate URL for where you host the list. Example using the repository raw file (replace `main` with your default branch if different):
+- **All Tokens**: `https://dulcet-labs.github.io/polar-token-list/all.json`
+- **Strict Tokens**: `https://dulcet-labs.github.io/polar-token-list/strict.json`  
+- **Polar Verified**: `https://dulcet-labs.github.io/polar-token-list/polar-verified.json`
+- **Banned Tokens**: `https://dulcet-labs.github.io/polar-token-list/banned.json`
+
+**📊 Browse Lists**: Visit [https://dulcet-labs.github.io/polar-token-list/](https://dulcet-labs.github.io/polar-token-list/) for a web interface showing all available lists.
+
+### JavaScript/TypeScript Integration
 
 ```javascript
-// Example: raw GitHub URL to the strict list (served as raw JSON)
-const TOKEN_LIST_URL = "https://raw.githubusercontent.com/Dulcet-Labs/polar-token-list/main/packages/token-service/dist/strict.json";
+// Fetch all tokens (879 tokens from BlockBerry)
+const allTokens = await fetch('https://dulcet-labs.github.io/polar-token-list/all.json')
+  .then(r => r.json());
 
-async function getTokenList() {
-  const response = await fetch(TOKEN_LIST_URL);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch token list: ${response.status} ${response.statusText}`);
+// Fetch strict curated tokens (3 manually verified)
+const strictTokens = await fetch('https://dulcet-labs.github.io/polar-token-list/strict.json')
+  .then(r => r.json());
+
+// Fetch Polar team verified tokens (16 tokens)
+const polarTokens = await fetch('https://dulcet-labs.github.io/polar-token-list/polar-verified.json')
+  .then(r => r.json());
+
+// All lists use the same format
+console.log(`All: ${allTokens.tokens.length} tokens`);
+console.log(`Strict: ${strictTokens.tokens.length} tokens`);
+console.log(`Polar: ${polarTokens.tokens.length} tokens`);
+
+// Example: Filter tokens by symbol
+const suiToken = allTokens.tokens.find(token => token.symbol === 'SUI');
+console.log(suiToken);
+```
+
+### Command Line Usage
+
+```bash
+# Test all endpoints
+curl -s "https://dulcet-labs.github.io/polar-token-list/all.json" | jq '.name, (.tokens | length)'
+curl -s "https://dulcet-labs.github.io/polar-token-list/strict.json" | jq '.name, (.tokens | length)'
+curl -s "https://dulcet-labs.github.io/polar-token-list/polar-verified.json" | jq '.name, (.tokens | length)'
+curl -s "https://dulcet-labs.github.io/polar-token-list/banned.json" | jq '.name, (.banned | length)'
+
+# Get specific token info
+curl -s "https://dulcet-labs.github.io/polar-token-list/strict.json" | jq '.tokens[0]'
+```
+
+### DEX/Wallet Integration
+
+```javascript
+// Example: Load token list for a DEX interface
+class TokenListManager {
+  constructor() {
+    this.baseUrl = 'https://dulcet-labs.github.io/polar-token-list/';
   }
-  return response.json();
+
+  async loadTokenList(type = 'strict') {
+    const response = await fetch(`${this.baseUrl}${type}.json`);
+    const data = await response.json();
+    return data.tokens;
+  }
+
+  async getVerifiedTokens() {
+    return this.loadTokenList('strict');
+  }
+
+  async getAllTokens() {
+    return this.loadTokenList('all');
+  }
+
+  async getBannedTokens() {
+    const response = await fetch(`${this.baseUrl}banned.json`);
+    const data = await response.json();
+    return data.banned;
+  }
 }
 ```
 
-### Command Line (curl)
+### Updates & Caching
 
-- Recommended: use raw.githubusercontent.com when pointing to a file in the repo:
-```bash
-# Raw GitHub-hosted file (read-only)
-curl -L -f "https://raw.githubusercontent.com/Dulcet-Labs/polar-token-list/main/packages/token-service/dist/strict.json" | jq
-```
-
-- If you have the GitHub "blob" URL (HTML), convert it to raw or use the /raw/ path:
-  - Browser blob URL:
-    https://github.com/Dulcet-Labs/polar-token-list/blob/main/packages/token-service/dist/strict.json
-  - Raw equivalent:
-    https://raw.githubusercontent.com/Dulcet-Labs/polar-token-list/main/packages/token-service/dist/strict.json
-  - Or:
-    https://github.com/Dulcet-Labs/polar-token-list/raw/main/packages/token-service/dist/strict.json
-
-- GitHub API (returns raw content when you request the raw media type):
-```bash
-curl -H "Accept: application/vnd.github.v3.raw" -L \
-  "https://api.github.com/repos/Dulcet-Labs/polar-token-list/contents/packages/token-service/dist/strict.json" \
-  -o strict.json
-```
-
-- Private repo or rate-limited requests (use a token):
-```bash
-curl -H "Authorization: token YOUR_GITHUB_TOKEN" -L \
-  "https://raw.githubusercontent.com/Dulcet-Labs/polar-token-list/main/packages/token-service/dist/strict.json" \
-  -o strict.json
-```
-
-Helpful flags:
-- -L : follow redirects
-- -f : fail on HTTP error codes (so script exits non-zero on 4xx/5xx)
-- -sS: silent but show errors
-
-### Troubleshooting
-
-- You get HTML instead of JSON: you're using a "blob" (web) URL. Switch to raw.githubusercontent.com or the /raw/ path.
-- 404 Not Found: confirm branch name (main/master), file path, and filename (case-sensitive).
-- 401/403: the repo or file is private or you're rate-limited. Use an authenticated request or host the list on a public CDN.
-- CORS errors (in browser): CORS is enforced by browsers; curl/server-side fetches ignore CORS. If you need browser access, serve the JSON from a host that sets Access-Control-Allow-Origin: * (e.g., GitHub Pages, your CDN).
-- Rate limiting by GitHub API: authenticate with a token or use a CDN to host the published lists.
+- **Auto-updates**: Lists refresh automatically when the team pushes changes
+- **Caching**: GitHub Pages caches for ~5-10 minutes
+- **CORS**: All endpoints include CORS headers for browser access
+- **Reliability**: 99.9% uptime via GitHub's CDN
 
 ## 🔐 Environment Setup
 
