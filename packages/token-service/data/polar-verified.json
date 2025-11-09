@@ -174,5 +174,77 @@
     "reason": "Bulk promoted by admin",
     "verifiedBy": "polar",
     "verifiedAt": "2025-11-09T15:31:45.271Z"
+  },
+  {
+    "name": "Lombard Staked BTC",
+    "symbol": "LBTC",
+    "coinType": "0x3e8e9423d80e1774a7ca128fccd8bf5f1f7753be658c5e645929037f7c819040::lbtc::LBTC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:44:49.495Z"
+  },
+  {
+    "name": "Ondo US Dollar Yield",
+    "symbol": "USDY",
+    "coinType": "0x960b531667636f39e85867775f52f6b1f220a058c4de786905bdf761e06a56bb::usdy::USDY",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:44:49.496Z"
+  },
+  {
+    "name": "Attention",
+    "symbol": "ATTN",
+    "coinType": "0x0ef38abcdaaafedd1e2d88929068a3f65b59bf7ee07d7e8f573c71df02d27522::attn::ATTN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:44:49.496Z"
+  },
+  {
+    "name": "DeAgentAI",
+    "symbol": "AIA",
+    "coinType": "0x8b449b4dc0f8c5f996734eaf23d36a5f6724e02e312a7e4af34bd0bb74de7b17::deagent_token::DEAGENT_TOKEN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:44:49.496Z"
+  },
+  {
+    "name": "OKX Wrapped BTC",
+    "symbol": "xBTC",
+    "coinType": "0x876a4b7bce8aeaef60464c11f4026903e9afacab79b9b142686158aa86560b50::xbtc::XBTC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:44:49.497Z"
+  },
+  {
+    "name": "haWAL",
+    "symbol": "haWAL",
+    "coinType": "0x8b4d553839b219c3fd47608a0cc3d5fcc572cb25d41b7df3833208586a8d2470::hawal::HAWAL",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:44:49.496Z"
+  },
+  {
+    "name": "Bucket USD",
+    "symbol": "BUCK",
+    "coinType": "0xce7ff77a83ea0cb6fd39bd8748e2ec89a3f41e8efdc3f4eb123e0ca37b184db2::buck::BUCK",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:44:49.496Z"
+  },
+  {
+    "name": "ALPHA Token",
+    "symbol": "ALPHA",
+    "coinType": "0xfe3afec26c59e874f3c1d60b8203cb3852d2bb2aa415df9548b8d688e6683f93::alpha::ALPHA",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:44:49.496Z"
+  },
+  {
+    "name": "LOFI",
+    "symbol": "LOFI",
+    "coinType": "0xf22da9a24ad027cccb5f2d496cbe91de953d363513db08a3a734d361c7c17503::LOFI::LOFI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:44:49.496Z"
   }
 ]
