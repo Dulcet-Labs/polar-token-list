@@ -126,5 +126,53 @@
     "reason": "Bulk promoted by admin",
     "verifiedBy": "polar",
     "verifiedAt": "2025-10-31T00:19:29.238Z"
+  },
+  {
+    "name": "sudeng",
+    "symbol": "HIPPO",
+    "coinType": "0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce483c8bbb8b87b::sudeng::SUDENG",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:31:45.270Z"
+  },
+  {
+    "name": "Scallop",
+    "symbol": "SCA",
+    "coinType": "0x7016aae72cfc67f2fadf55769c0a7dd54291a583b63051a5ed71081cce836ac6::sca::SCA",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:31:45.271Z"
+  },
+  {
+    "name": "Turbos",
+    "symbol": "TURBOS",
+    "coinType": "0x5d1f47ea69bb0de31c313d7acf89b890dbb8991ea8e03c6c355171f84bb1ba4a::turbos::TURBOS",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:31:45.271Z"
+  },
+  {
+    "name": "MANIFEST",
+    "symbol": "MANIFEST",
+    "coinType": "0xc466c28d87b3d5cd34f3d5c088751532d71a38d93a8aae4551dd56272cfb4355::manifest::MANIFEST",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:31:45.271Z"
+  },
+  {
+    "name": "BLUB",
+    "symbol": "BLUB",
+    "coinType": "0xfa7ac3951fdca92c5200d468d31a365eb03b2be9936fde615e69f0c1274ad3a0::BLUB::BLUB",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:31:45.271Z"
+  },
+  {
+    "name": "FlowX",
+    "symbol": "FLX",
+    "coinType": "0x6dae8ca14311574fdfe555524ea48558e3d1360d1607d1c7f98af867e3b7976c::flx::FLX",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:31:45.271Z"
   }
 ]
