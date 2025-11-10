@@ -246,5 +246,261 @@
     "reason": "Bulk promoted by admin",
     "verifiedBy": "polar",
     "verifiedAt": "2025-11-09T15:44:49.496Z"
+  },
+  {
+    "name": "Wrapped Bitcoin",
+    "symbol": "wBTC",
+    "coinType": "0xaafb102dd0902f5055cadecd687fb5b71ca82ef0e0285d90afde828ec58ca96b::btc::BTC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.974Z"
+  },
+  {
+    "name": "superSUI",
+    "symbol": "superSUI",
+    "coinType": "0x790f258062909e3a0ffc78b3c53ac2f62d7084c3bab95644bdeb05add7250001::super_sui::SUPER_SUI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.975Z"
+  },
+  {
+    "name": "AUSD",
+    "symbol": "AUSD",
+    "coinType": "0x2053d08c1e2bd02791056171aab0fd12bd7cd7efad2ab8f6b9c8902f14df2ff2::ausd::AUSD",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.976Z"
+  },
+  {
+    "name": "Bonk",
+    "symbol": "Bonk",
+    "coinType": "0x6907963ca849faff0957b9a8269a7a07065e3def2eef49cc33b50ab946ea5a9f::coin::COIN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.975Z"
+  },
+  {
+    "name": "Matrixdock Gold",
+    "symbol": "XAUM",
+    "coinType": "0x9d297676e7a4b771ab023291377b2adfaa4938fb9080b8d12430e4b108b836a9::xaum::XAUM",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.976Z"
+  },
+  {
+    "name": "Staked deUSD",
+    "symbol": "sdeUSD",
+    "coinType": "0xf6b468748dced8435f4407d0ecb0457b921a2e89266a60862e36dbf243c71841::sdeusd::SDEUSD",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.976Z"
+  },
+  {
+    "name": "First Digital USD",
+    "symbol": "FDUSD",
+    "coinType": "0xf16e6b723f242ec745dfd7634ad072c42d5c1d9ac9d62a39c381303eaa57693a::fdusd::FDUSD",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.975Z"
+  },
+  {
+    "name": "Spring SUI",
+    "symbol": "sSUI",
+    "coinType": "0x83556891f4a0f233ce7b05cfe7f957d4020492a34f5405b2cb9377d060bef4bf::spring_sui::SPRING_SUI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.976Z"
+  },
+  {
+    "name": "MEMEFI",
+    "symbol": "MEMEFI",
+    "coinType": "0x506a6fc25f1c7d52ceb06ea44a3114c9380f8e2029b4356019822f248b49e411::memefi::MEMEFI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.976Z"
+  },
+  {
+    "name": "Swarm Network",
+    "symbol": "TRUTH",
+    "coinType": "0x0a48f85a3905cfa49a652bdb074d9e9fabad27892d54afaa5c9e0adeb7ac3cdf::swarm_network_token::SWARM_NETWORK_TOKEN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.976Z"
+  },
+  {
+    "name": "tBTC v2",
+    "symbol": "TBTC",
+    "coinType": "0x77045f1b9f811a7a8fb9ebd085b5b0c55c5cb0d1520ff55f7037f89b5da9f5f1::TBTC::TBTC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.975Z"
+  },
+  {
+    "name": "Alkimi",
+    "symbol": "ALKIMI",
+    "coinType": "0x1a8f4bc33f8ef7fbc851f156857aa65d397a6a6fd27a7ac2ca717b51f2fd9489::alkimi::ALKIMI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.977Z"
+  },
+  {
+    "name": "Yield BTC.B",
+    "symbol": "YBTC.B",
+    "coinType": "0xa03ab7eee2c8e97111977b77374eaf6324ba617e7027382228350db08469189e::ybtc::YBTC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.977Z"
+  },
+  {
+    "name": "DeLorean",
+    "symbol": "DMC",
+    "coinType": "0x4c981f3ff786cdb9e514da897ab8a953647dae2ace9679e8358eec1e3e8871ac::dmc::DMC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.976Z"
+  },
+  {
+    "name": "Elixir's deUSD",
+    "symbol": "deUSD",
+    "coinType": "0xf6b468748dced8435f4407d0ecb0457b921a2e89266a60862e36dbf243c71841::deusd::DEUSD",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.975Z"
+  },
+  {
+    "name": "x Staked SUI",
+    "symbol": "xSUI",
+    "coinType": "0x2b6602099970374cf58a2a1b9d96f005fccceb81e92eb059873baf420eb6c717::x_sui::X_SUI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.977Z"
+  },
+  {
+    "name": "Chirp Token",
+    "symbol": "CHIRP",
+    "coinType": "0x1ef4c0b20340b8c6a59438204467ca71e1e7cbe918526f9c2c6c5444517cd5ca::chirp::CHIRP",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.977Z"
+  },
+  {
+    "name": "Bucket Token",
+    "symbol": "BUT",
+    "coinType": "0xbc858cb910b9914bee64fff0f9b38855355a040c49155a17b265d9086d256545::but::BUT",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.977Z"
+  },
+  {
+    "name": "pStake Finance",
+    "symbol": "PSTAKE",
+    "coinType": "0xb66e9e1cd25e8be90091c4f20b42f0472ea22d4244f3bc2241891ed7ad2d80de::celer_pstake_coin::CELER_PSTAKE_COIN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.977Z"
+  },
+  {
+    "name": "LUMIWAVE",
+    "symbol": "LWA",
+    "coinType": "0x3332b178c1513f32bca9cf711b0318c2bca4cb06f1a74211bac97a1eeb7f7259::LWA::LWA",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.977Z"
+  },
+  {
+    "name": "$E4C",
+    "symbol": "E4C",
+    "coinType": "0x84b27ddadc6139c7e8837fef6759eba4670ba3fc0679acd118b4e9252f834e29::e4c::E4C",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.978Z"
+  },
+  {
+    "name": "SEED",
+    "symbol": "SEED",
+    "coinType": "0x1e005d033d858a39e1210aafdd139ce4fa21c79cdb8acadd16513a03c9d4cebd::seed::SEED",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.978Z"
+  },
+  {
+    "name": "SLOVE",
+    "symbol": "SLOVE",
+    "coinType": "0x6dd439dee053557b3dd340287a4b81099b3e729cb48fbdae726dd2dff82736c3::slove::SLOVE",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.978Z"
+  },
+  {
+    "name": "AXOL",
+    "symbol": "AXOL",
+    "coinType": "0xae00e078a46616bf6e1e6fb673d18dcd2aa31319a07c9bc92f6063363f597b4e::AXOL::AXOL",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.978Z"
+  },
+  {
+    "name": "ARTFI",
+    "symbol": "ARTFI",
+    "coinType": "0x706fa7723231e13e8d37dad56da55c027f3163094aa31c867ca254ba0e0dc79f::artfi::ARTFI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.977Z"
+  },
+  {
+    "name": "AlphaFi Staked SUI",
+    "symbol": "stSUI",
+    "coinType": "0xd1b72982e40348d069bb1ff701e634c117bb5f741f44dff91e472d3b01461e55::stsui::STSUI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.978Z"
+  },
+  {
+    "name": "Volo Staked SUI",
+    "symbol": "vSUI",
+    "coinType": "0x549e8b69270defbfafd4f94e17ec44cdbdd99820b33bda2278dea3b9a32d3f55::cert::CERT",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.978Z"
+  },
+  {
+    "name": "haSUI",
+    "symbol": "haSUI",
+    "coinType": "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::hasui::HASUI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.978Z"
+  },
+  {
+    "name": "COIN",
+    "symbol": "",
+    "coinType": "0xf4530aa5ef8af33c497ec38f54ff9dd45fad9157264efae9693eb62faf8667b5::coin::COIN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.979Z"
+  },
+  {
+    "name": "SquidOnSui",
+    "symbol": "SQID",
+    "coinType": "0x4f83caf6626d0f931ac519028e62a8f9d9fc8fdf62da09489023940fd0bba882::sqid::SQID",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.978Z"
+  },
+  {
+    "name": "Sudo LP Token",
+    "symbol": "SLP",
+    "coinType": "0xc44d97a4bc4e5a33ca847b72b123172c88a6328196b71414f32c3070233604b2::slp::SLP",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.979Z"
+  },
+  {
+    "name": "afSUI",
+    "symbol": "AFSUI",
+    "coinType": "0xf325ce1300e8dac124071d3152c5c5ee6174914f8bc2161e88329cf579246efc::afsui::AFSUI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-10T15:26:41.979Z"
   }
 ]
