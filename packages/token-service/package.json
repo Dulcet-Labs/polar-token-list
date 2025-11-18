@@ -20,8 +20,6 @@
     "generate:banned": "node dist/generators/banned-list.js",
     "generate:polar-verified": "node dist/generators/polar-verified-list.js",
     "discover-tokens": "node dist/discovery/sui-rpc.js",
-    "research-workflow": "node dist/research/manual-research.js",
-    "scrape-suiscan": "node dist/discovery/suiscan-scraper.js",
     "discover-blockberry": "node dist/discovery/blockberry-api.js",
     "discover-most-used": "node -e \"require('./dist/discovery/blockberry-api.js').runMostUsedDiscovery()\"",
     "get-all-verified": "node -e \"require('./dist/discovery/blockberry-api.js').runAllVerifiedDiscovery()\"",

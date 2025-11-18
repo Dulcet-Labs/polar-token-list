@@ -57,7 +57,8 @@ jobs:
           cp packages/token-service/data/all-verified-tokens.json packages/token-service/data/all-verified-tokens.backup.json || echo "No existing file to backup"
 
       - name: Sync verified tokens from BlockBerry
-        run: corepack yarn workspace @polar/token-service discover-all-verified
+        run: node run-discover-all.mjs
+        working-directory: packages/token-service
         env:
           BLOCKBERRY_API_KEY: ${{ secrets.BLOCKBERRY_API_KEY }}
 
