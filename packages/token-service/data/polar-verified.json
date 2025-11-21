@@ -622,5 +622,21 @@
     "reason": "Bulk promoted by admin",
     "verifiedBy": "polar",
     "verifiedAt": "2025-11-18T18:22:42.854Z"
+  },
+  {
+    "name": "SuiAI",
+    "symbol": "SUAI",
+    "coinType": "0xbc732bc5f1e9a9f4bdf4c0672ee538dbf56c161afe04ff1de2176efabdf41f92::suai::SUAI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:19:55.312Z"
+  },
+  {
+    "name": "CULOSUI",
+    "symbol": "CULO",
+    "coinType": "0xf33bdc280faf4bd0411cac82173b5744b7a40e4b9abc0ad6f51a495c060faf77::culo::CULO",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:19:55.312Z"
   }
 ]
