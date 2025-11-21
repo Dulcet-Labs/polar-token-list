@@ -710,5 +710,21 @@
     "reason": "Bulk promoted by admin",
     "verifiedBy": "polar",
     "verifiedAt": "2025-11-21T10:00:19.087Z"
+  },
+  {
+    "name": "AXOLcoin",
+    "symbol": "AXOL",
+    "coinType": "0xf00eb7ab086967a33c04a853ad960e5c6b0955ef5a47d50b376d83856dc1215e::axol::AXOL",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T10:12:27.934Z"
+  },
+  {
+    "name": "SAIL",
+    "symbol": "SAIL",
+    "coinType": "0x1d4a2bdbc1602a0adaa98194942c220202dcc56bb0a205838dfaa63db0d5497e::SAIL::SAIL",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T10:12:27.935Z"
   }
 ]
