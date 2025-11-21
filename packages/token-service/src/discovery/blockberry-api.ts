@@ -858,6 +858,7 @@ export async function runMostUsedDiscovery(): Promise<void> {
     }
 }
 
-if (require.main === module) {
+// ESM module detection
+if (import.meta.url === `file://${process.argv[1]}`) {
     runBlockBerryDiscovery();
 }

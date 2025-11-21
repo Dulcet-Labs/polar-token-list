@@ -70,7 +70,7 @@ jobs:
           cp packages/token-service/data/all-verified-tokens.json packages/token-service/data/all-verified-tokens.backup.json || echo "No existing file"
           
           # Sync from BlockBerry
-          corepack yarn workspace @polar/token-service discover-all-verified
+          cd packages/token-service && node run-discover-all.mjs
           
           # Copy to main file
           cp packages/token-service/data/all-verified-tokens.json packages/token-service/data/verified-tokens.json
