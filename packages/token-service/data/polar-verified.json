@@ -502,5 +502,213 @@
     "reason": "Bulk promoted by admin",
     "verifiedBy": "polar",
     "verifiedAt": "2025-11-10T15:26:41.979Z"
+  },
+  {
+    "name": "Lorenzo stBTC",
+    "symbol": "stBTC",
+    "coinType": "0x5f496ed5d9d045c5b788dc1bb85f54100f2ede11e46f6a232c29daada4c5bdb6::coin::COIN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.823Z"
+  },
+  {
+    "name": "MIU",
+    "symbol": "MIU",
+    "coinType": "0x32a976482bf4154961bf20bfa3567a80122fdf8e8f8b28d752b609d8640f7846::miu::MIU",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.854Z"
+  },
+  {
+    "name": "SuiPad",
+    "symbol": "SUIP",
+    "coinType": "0xe4239cd951f6c53d9c41e25270d80d31f925ad1655e5ba5b543843d4a66975ee::SUIP::SUIP",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.855Z"
+  },
+  {
+    "name": "mUSD",
+    "symbol": "mUSD",
+    "coinType": "0xe44df51c0b21a27ab915fa1fe2ca610cd3eaa6d9666fe5e62b988bf7f0bd8722::musd::MUSD",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.854Z"
+  },
+  {
+    "name": "XMN",
+    "symbol": "XMN",
+    "coinType": "0x97c7571f4406cdd7a95f3027075ab80d3e9c937c2a567690d31e14ab1872ccee::xmn::XMN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.855Z"
+  },
+  {
+    "name": "SUI Agents",
+    "symbol": "SUIAI",
+    "coinType": "0xdc083ed335b5fe342cca1d5887530336246ed7d80da6bcecbc7c1becb88074ee::mycoin::MYCOIN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.855Z"
+  },
+  {
+    "name": "Xociety Token",
+    "symbol": "XO",
+    "coinType": "0x90f9eb95f62d31fbe2179313547e360db86d88d2399103a94286291b63f469ba::xo::XO",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.854Z"
+  },
+  {
+    "name": "USDZ",
+    "symbol": "USDZ",
+    "coinType": "0x7fd8aba1652c58b6397c799fd375e748e5053145cb7e126d303e0a1545fd1fec::usdz::USDZ",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.855Z"
+  },
+  {
+    "name": "SUI Desci Agents",
+    "symbol": "DESCI",
+    "coinType": "0x01d022d585ea528404d2ea250b01098ed62348c0a52bf934d797cec374261d7d::desci::DESCI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.855Z"
+  },
+  {
+    "name": "Toilet Dust",
+    "symbol": "Toilet",
+    "coinType": "0xc5b61b1e1f7f88511c9c0c6f475f823c66cc4e2d39a49beb6777059710be8404::toilet::TOILET",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.855Z"
+  },
+  {
+    "name": "SUI TRUMP",
+    "symbol": "SUITRUMP",
+    "coinType": "0xdeb831e796f16f8257681c0d5d4108fa94333060300b2459133a96631bf470b8::suitrump::SUITRUMP",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.854Z"
+  },
+  {
+    "name": "Sui Bull",
+    "symbol": "Bull",
+    "coinType": "0xb0b6d9fa117da4f47c4895c4216cd3cad37d3b2f4425c62dbd4f4638b44e3f93::bull::BULL",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.855Z"
+  },
+  {
+    "name": "❄️ WAL",
+    "symbol": "wWAL",
+    "coinType": "0xb1b0650a8862e30e3f604fd6c5838bc25464b8d3d827fbd58af7cb9685b832bf::wwal::WWAL",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.855Z"
+  },
+  {
+    "name": "Beeg Blue Whale",
+    "symbol": "BEEG",
+    "coinType": "0x727458212ca0be056d9ccc0d42981bdf41109779fbd9c7fad56c4456e0c3d0c6::beeg::BEEG",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.855Z"
+  },
+  {
+    "name": "Koban",
+    "symbol": "KOBAN",
+    "coinType": "0x8400e7044d360c28dd338111d2aa54ca5bdc960a8d6b60bf3b28e1ca503df3e2::koban::KOBAN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-18T18:22:42.854Z"
+  },
+  {
+    "name": "SuiAI",
+    "symbol": "SUAI",
+    "coinType": "0xbc732bc5f1e9a9f4bdf4c0672ee538dbf56c161afe04ff1de2176efabdf41f92::suai::SUAI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:19:55.312Z"
+  },
+  {
+    "name": "CULOSUI",
+    "symbol": "CULO",
+    "coinType": "0xf33bdc280faf4bd0411cac82173b5744b7a40e4b9abc0ad6f51a495c060faf77::culo::CULO",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:19:55.312Z"
+  },
+  {
+    "name": "ZO Perpetuals LP Token",
+    "symbol": "ZLP",
+    "coinType": "0xf7fade57462e56e2eff1d7adef32e4fd285b21fd81f983f407bb7110ca766cda::zlp::ZLP",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:40:21.929Z"
+  },
+  {
+    "name": "FUD",
+    "symbol": "FUD",
+    "coinType": "0x76cb819b01abed502bee8a702b4c2d547532c12f25001c9dea795a5e631c26f1::fud::FUD",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:40:21.929Z"
+  },
+  {
+    "name": "aaa cat",
+    "symbol": "AAA",
+    "coinType": "0xd976fda9a9786cda1a36dee360013d775a5e5f206f8e20f84fad3385e99eeb2d::aaa::AAA",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:40:21.929Z"
+  },
+  {
+    "name": "Pugwifhat",
+    "symbol": "PUGWIF",
+    "coinType": "0x2cd6f14a4b64c3a0fa9c644e8ed88d9c91d789a071886d67d24e6b435147063d::pugwif::PUGWIF",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:40:21.929Z"
+  },
+  {
+    "name": "SKELETON",
+    "symbol": "SKELSUI",
+    "coinType": "0x84604526d71bbe7738c3c02d3c8a48778955718289c03d814d8468b58ae9a898::skelsui::SKELSUI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:40:21.929Z"
+  },
+  {
+    "name": "Tardi",
+    "symbol": "TARDI",
+    "coinType": "0x4cf08813756dfa7519cb480a1a1a3472b5b4ec067592a8bee0f826808d218158::tardi::TARDI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T08:40:21.929Z"
+  },
+  {
+    "name": "MMT",
+    "symbol": "MMT",
+    "coinType": "0x35169bc93e1fddfcf3a82a9eae726d349689ed59e4b065369af8789fe59f8608::mmt::MMT",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T10:00:19.086Z"
+  },
+  {
+    "name": "Bucket USD",
+    "symbol": "USDB",
+    "coinType": "0xe14726c336e81b32328e92afc37345d159f5b550b09fa92bd43640cfdd0a0cfd::usdb::USDB",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T10:00:19.087Z"
+  },
+  {
+    "name": "Sacabam",
+    "symbol": "SCB",
+    "coinType": "0x9a5502414b5d51d01c8b5641db7436d789fa15a245694b24aa37c25c2a6ce001::scb::SCB",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T10:00:19.087Z"
   }
 ]
