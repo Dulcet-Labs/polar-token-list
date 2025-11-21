@@ -126,5 +126,45 @@
     "reason": "Bulk promoted by admin",
     "verifiedBy": "polar",
     "verifiedAt": "2025-10-31T00:19:29.238Z"
+  },
+  {
+    "name": "Wrapped Bitcoin",
+    "symbol": "wBTC",
+    "coinType": "0xaafb102dd0902f5055cadecd687fb5b71ca82ef0e0285d90afde828ec58ca96b::btc::BTC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:30:27.425Z"
+  },
+  {
+    "name": "Lombard Staked BTC",
+    "symbol": "LBTC",
+    "coinType": "0x3e8e9423d80e1774a7ca128fccd8bf5f1f7753be658c5e645929037f7c819040::lbtc::LBTC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:30:27.426Z"
+  },
+  {
+    "name": "Bonk",
+    "symbol": "Bonk",
+    "coinType": "0x6907963ca849faff0957b9a8269a7a07065e3def2eef49cc33b50ab946ea5a9f::coin::COIN",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:30:27.426Z"
+  },
+  {
+    "name": "LOFI",
+    "symbol": "LOFI",
+    "coinType": "0xf22da9a24ad027cccb5f2d496cbe91de953d363513db08a3a734d361c7c17503::LOFI::LOFI",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:41:09.426Z"
+  },
+  {
+    "name": "DeLorean",
+    "symbol": "DMC",
+    "coinType": "0x4c981f3ff786cdb9e514da897ab8a953647dae2ace9679e8358eec1e3e8871ac::dmc::DMC",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-09T15:41:09.426Z"
   }
 ]

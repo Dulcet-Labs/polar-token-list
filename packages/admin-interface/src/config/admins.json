@@ -1,8 +1,8 @@
 {
   "admins": [
     {
-      "address": "0x1234567890abcdef1234567890abcdef12345678",
-      "username": "dev-admin",
+      "address": "0x1234567890abcdef1234567890abcdef123456780x246c5db899e8c192848444c1810839c1fda8dbccbe6059c54f2b585eed08fdb0",
+      "username": "ziddy",
       "role": "super-admin",
       "email": "admin@polardex.com"
     }

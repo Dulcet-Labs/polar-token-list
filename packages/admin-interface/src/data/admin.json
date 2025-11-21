@@ -1,0 +1,29 @@
+{
+  "admins": [
+    {
+      "id": "admin-001",
+      "walletAddress": "0x246c5db899e8c192848444c1810839c1fda8dbccbe6059c54f2b585eed08fdb0",
+      "username": "ziddy",
+      "email": "zandy4real@gmail.com",
+      "role": "super-admin",
+      "permissions": ["token-management", "revenue-view", "dex-metrics"],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "isActive": true
+    },
+    {
+      "id": "admin-002", 
+      "walletAddress": "0x09a900a4bfeed1d9883c84493106370c182e042b4285f46d31778f03c94442a8",
+      "username": "OG",
+      "email": "", 
+      "role": "super-admin",
+      "permissions": ["token-management", "revenue-view", "dex-metrics"],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "isActive": true
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2024-01-01T00:00:00Z",
+    "description": "PolarDEX Admin Database - Add your real SUI wallet addresses here"
+  }
+}
