@@ -686,5 +686,29 @@
     "reason": "Bulk promoted by admin",
     "verifiedBy": "polar",
     "verifiedAt": "2025-11-21T08:40:21.929Z"
+  },
+  {
+    "name": "MMT",
+    "symbol": "MMT",
+    "coinType": "0x35169bc93e1fddfcf3a82a9eae726d349689ed59e4b065369af8789fe59f8608::mmt::MMT",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T10:00:19.086Z"
+  },
+  {
+    "name": "Bucket USD",
+    "symbol": "USDB",
+    "coinType": "0xe14726c336e81b32328e92afc37345d159f5b550b09fa92bd43640cfdd0a0cfd::usdb::USDB",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T10:00:19.087Z"
+  },
+  {
+    "name": "Sacabam",
+    "symbol": "SCB",
+    "coinType": "0x9a5502414b5d51d01c8b5641db7436d789fa15a245694b24aa37c25c2a6ce001::scb::SCB",
+    "reason": "Bulk promoted by admin",
+    "verifiedBy": "polar",
+    "verifiedAt": "2025-11-21T10:00:19.087Z"
   }
 ]
