@@ -638,5 +638,44 @@
       "blockberryVerified": true
     },
     "version": 1
+  },
+  {
+    "name": "Pawtato",
+    "symbol": "TATO",
+    "decimals": 9,
+    "coinType": "0x04deb377c33bfced1ab81cde96918e2538fe78735777150b0064ccf7df5e1c81::tato::TATO",
+    "coinDenom": "TATO",
+    "objectId": "0xd2eacdb0a3d347c860e0a467c15302ef95018a067a3e5201df4fbf8d03a8bdcd",
+    "logoURI": "https://img.pawtato.app/tato/TATO.png",
+    "verified": true,
+    "verifiedBy": "blockberry",
+    "addedAt": "2025-11-17T09:31:33.481Z",
+    "tags": [
+      "verified",
+      "blockberry"
+    ],
+    "extensions": {
+      "price": 0.01225560978280565,
+      "volume24h": null,
+      "marketCap": 0,
+      "holders": 1516,
+      "totalSupply": 1000000000,
+      "circulatingSupply": null,
+      "maxSupply": null,
+      "description": "The core token of the Pawtato ecosystem",
+      "packageId": "0x04deb377c33bfced1ab81cde96918e2538fe78735777150b0064ccf7df5e1c81",
+      "creatorAddress": "0x7b8262c09d8253d305cfe64aab48e21067e0dc571edddccf01275739cf3c9b9a",
+      "creatorName": null,
+      "createTimestamp": 1762853297405,
+      "isVerified": true,
+      "isBridged": false,
+      "securityMessage": null,
+      "dominance": null,
+      "fdv": 12255609.782805651,
+      "supplyInUsd": 12255609.78280565,
+      "creatorImg": null,
+      "blockberryVerified": true
+    },
+    "version": 1
   }
 ]
